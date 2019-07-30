@@ -14,16 +14,22 @@ import java.util.List;
  * Cromossomo1 - genes binarios, representam inteiros x e y com 24 bits de precisao cada
  */
 public class Cromossome1 extends Cromossome<Boolean> {
+    private final int minVal = -100;
+    private final int maxVal = 100;
+    
     private final int bitsX = 15;
     private final int bitsY = 15;
     
-    private int x,y;
+    private final double fator = (maxVal - minVal) / Math.pow(2, bitsX);
+    
+    private double x,y;
     
     @Override
     public void setGenes(List<Boolean> genes) {
         super.setGenes(genes);
         x = convertGenes(genes, 0, bitsX);
         y = convertGenes(genes, bitsX, bitsX + bitsY);
+        this.calcFitness();
     }
     
     @Override
@@ -51,6 +57,15 @@ public class Cromossome1 extends Cromossome<Boolean> {
         }
         newCromossome.setGenes(newGenes);
         
+        // debug print
+        /*System.out.println(String.format("Crossover point: %d", crossPoint));
+        System.out.print("Parent 1: ");
+        this.printGenes();
+        System.out.print("Parent 2: ");
+        ((Cromossome1) other).printGenes();
+        System.out.print("Son     : ");
+        newCromossome.printGenes();
+       */ 
         return newCromossome;
     }
 
@@ -63,29 +78,44 @@ public class Cromossome1 extends Cromossome<Boolean> {
             }
         }
         this.setGenes(genes);
+        
+        // debug print
+        /*System.out.print("Son muta: ");
+        this.printGenes();
+        */
         return this;
     }
 
     @Override
     protected double calcFitness() {
-        return Math.abs(x * y * Math.sin((y * Math.PI)/4));
+        this.setFitness(Math.abs(x * y * Math.sin((y * Math.PI)/4)));
+        return this.getFitness();
     }
 
     @Override
     protected String fenotype() {
-        return String.format("x = %d | y = %d", x, y);
+        return String.format("x = %.5f | y = %.5f", x, y);
     }
     
 
     // Método que converte genes binários em inteiro
-    private int convertGenes(List<Boolean> genes, int start, int end) {
+    private double convertGenes(List<Boolean> genes, int start, int end) {
         int value = 0;
         int mult = 1;
         for (int i = start; i < end; i++) {
             value += (genes.get(i) ? 1 : 0) * mult;
             mult *= 2;
         }
-        return value;
+        return(value * fator + minVal);
     }
+    
+    // print the genes sequence
+    private void printGenes() {
+        getGenes().forEach((gene) -> {
+            System.out.print(gene ? "1" : "0");
+        });
+        System.out.println();
+    }
+
 
 }

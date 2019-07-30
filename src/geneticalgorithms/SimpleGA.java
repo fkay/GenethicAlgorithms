@@ -15,11 +15,29 @@ public abstract class SimpleGA{
     private Population population;
     
     public void execute(int generations) {
-        population.initPopulation();
-        System.out.println(population.toString());
-        for (int i = 0; i < generations; i++) {
-            population.nextGeneration();
-            System.out.println(population.toString());
+        if(getPopulation() == null) {
+            System.out.println("Nenhuma popuplacao configurada");
+            return;
         }
+        getPopulation().initPopulation();
+        System.out.println(getPopulation().toString());
+        for (int i = 0; i < generations; i++) {
+            getPopulation().nextGeneration();
+            System.out.println(getPopulation().toString());
+        }
+    }
+
+    /**
+     * @return the population
+     */
+    public final Population getPopulation() {
+        return population;
+    }
+
+    /**
+     * @param population the population to set
+     */
+    public final void setPopulation(Population population) {
+        this.population = population;
     }
 }

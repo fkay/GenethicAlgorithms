@@ -33,8 +33,12 @@ public abstract class Population {
     /**
      * @param cromossomes the cromossomes to set
      */
-    public void setCromossomes(List<Cromossome> cromossomes) {
+    public final void setCromossomes(List<Cromossome> cromossomes) {
         this.cromossomes = cromossomes;
+        // Calc fitness sum
+        this.sumFitness();
+        // Procura o melhor cromossomo
+        this.bestFitness();
     }
 
     /**
@@ -68,7 +72,7 @@ public abstract class Population {
     /**
      * @param probCross the probCross to set
      */
-    public void setProbCross(double probCross) {
+    public final void setProbCross(double probCross) {
         this.probCross = probCross;
     }
 
@@ -82,7 +86,7 @@ public abstract class Population {
     /**
      * @param probMutate the probMutate to set
      */
-    public void setProbMutate(double probMutate) {
+    public final void setProbMutate(double probMutate) {
         this.probMutate = probMutate;
     }
 
@@ -96,7 +100,7 @@ public abstract class Population {
     /**
      * @param size the size to set
      */
-    public void setSize(int size) {
+    public final void setSize(int size) {
         this.size = size;
     }
     
@@ -106,9 +110,9 @@ public abstract class Population {
     // calcula soma das avaliações dos individuos
     private double sumFitness() {
         this.sumFitness = 0;
-        for(Cromossome cromossome: getCromossomes()) {
+        getCromossomes().forEach((cromossome) -> {
             sumFitness += cromossome.getFitness();
-        }
+        });
         
         return (this.getSumFitness());
     }
@@ -134,11 +138,11 @@ public abstract class Population {
     }
     
     // retorna valor médio das avaliações da população
-    public double avgFitness() {
+    public double getAvgFitness() {
         return getSumFitness() / getSize();
     }
     
-    public Cromossome bestFitness() {
+    protected void bestFitness() {
         Cromossome best = getCromossomes().get(0);
         
         for(Cromossome cromossome: getCromossomes()) {
@@ -147,7 +151,6 @@ public abstract class Population {
         }
         
         this.bestCromossome = best;
-        return best;
     }
     
     // construtor recebe parametros da populacao
@@ -162,6 +165,6 @@ public abstract class Population {
     public String toString(){
         return String.format("Geração: %d\n"
                 + "Média avaliação: %f\n"
-                + "Melhor cromossomo: " + this.getBestCromossome().toString() + "\n", this.getGenerationNum(), this.avgFitness());
+                + "Melhor cromossomo: " + this.getBestCromossome().toString() + "\n", this.getGenerationNum(), this.getAvgFitness());
     }
 }

@@ -18,19 +18,22 @@ public abstract class Cromossome<T> {
     private double fitness;
 
     /**
-     * @return the alleles
+     * @return the genes
      */
     public List<T> getGenes() {
         return genes;
     }
 
     /**
-     * @param alleles the alleles to set
+     * @param genes the genes to set
      */
     protected void setGenes(List<T> genes) {
         this.genes = genes;
     }
     
+    /**
+     * @return the size
+     */
     public int getSize() {
         return this.genes.size();
     }
@@ -40,6 +43,13 @@ public abstract class Cromossome<T> {
      */
     public double getFitness() {
         return fitness;
+    }
+    
+    /**
+     * @param fitness the fitness to set
+     */
+    protected void setFitness(double fitness) {
+        this.fitness = fitness;
     }
     
     // Crossover com outro cromossomo

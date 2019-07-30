@@ -15,7 +15,11 @@ public class GeneticAlgorithms {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
+        final int populationSize = 20;
+        final int generations = 200;
+        SimpleGA1 sga = new SimpleGA1(populationSize);
+        
+        sga.execute(generations);
     }
     
 }

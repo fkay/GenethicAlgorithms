@@ -31,12 +31,13 @@ public class Population1 extends Population {
 
     @Override
     public void initPopulation() {
-        List<Cromossome1> cromossomes = new ArrayList();
+        List<Cromossome> cromossomes = new ArrayList();
         for(int i = 0; i < this.getSize(); i++) {
             Cromossome1 cromossome = new Cromossome1();
             cromossome.initGenes();
             cromossomes.add(cromossome);
         }
+        this.setCromossomes(cromossomes);
     }
     
     public Population1(int size, double probCross, double probMutate) {
