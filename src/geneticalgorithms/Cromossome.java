@@ -29,6 +29,8 @@ public abstract class Cromossome<T> {
      */
     protected void setGenes(List<T> genes) {
         this.genes = genes;
+        // after get the new gens alredy check fitness
+        this.fitness = this.calcFitness();
     }
     
     /**
@@ -52,23 +54,52 @@ public abstract class Cromossome<T> {
         this.fitness = fitness;
     }
     
-    // Crossover com outro cromossomo
-    // Retorna cromossomo resultado
-    public abstract Cromossome crossover(Cromossome other, double probCross);
+    // Simple single point crossover with other cromossome. 
+    // Return a new Cromossome from the crossover
+    public Cromossome crossover(Cromossome other, double probCross){
+        // get crossover point
+        int crossPoint = (new Double(Math.random() * this.getSize())).intValue();
+        Cromossome newCromossome = getNewCromossome();
+        List<T> newGenes = new ArrayList();
+        if(Math.random() < 0.5) {
+            newGenes.addAll(this.getGenes().subList(0, crossPoint));
+            newGenes.addAll(other.getGenes().subList(crossPoint,this.getSize()));
+        }
+        else {
+            newGenes.addAll(other.getGenes().subList(0, crossPoint));
+            newGenes.addAll(this.getGenes().subList(crossPoint,this.getSize()));
+        }
+        newCromossome.setGenes(newGenes);
+        
+        // debug print
+        /*System.out.println(String.format("Crossover point: %d", crossPoint));
+        System.out.print("Parent 1: ");
+        this.printGenes();
+        System.out.print("Parent 2: ");
+        ((Cromossome1) other).printGenes();
+        System.out.print("Son     : ");
+        newCromossome.printGenes();
+        */
+        return newCromossome;
+    }
     
-    // Mutação do cromossomo
-    // Retorna cromossomo mutado
+    // get a new Cromossome, subclasses need to override to create its own object
+    public abstract Cromossome getNewCromossome();
+    
+    // Cromossome mutation
     public abstract Cromossome mutate(double probMutate);
 
-    // Calcula avaliação do cromossomo
-    // retorno valor da avaliação
+    // Calc cromossome fitness
     protected abstract double calcFitness();
     
-    // Inicial genes do cromossome
+    // Init cromossome random genes
     protected abstract void initGenes();
     
-    // metodo que devolve o fenotipo gerado pelos genes
+    // return the fenotype from this cromossome (what its look like)
     protected abstract String fenotype();
+    
+    // print the genes
+    protected abstract void printGenes();
     
     @Override
     public String toString() {

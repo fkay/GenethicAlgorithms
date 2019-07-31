@@ -25,14 +25,6 @@ public class Cromossome1 extends Cromossome<Boolean> {
     private double x,y;
     
     @Override
-    public void setGenes(List<Boolean> genes) {
-        super.setGenes(genes);
-        x = convertGenes(genes, 0, bitsX);
-        y = convertGenes(genes, bitsX, bitsX + bitsY);
-        this.calcFitness();
-    }
-    
-    @Override
     public void initGenes(){
         List<Boolean> genes = new ArrayList();
         for(int i = 0; i < bitsX + bitsY; i++) {
@@ -68,6 +60,13 @@ public class Cromossome1 extends Cromossome<Boolean> {
        */ 
         return newCromossome;
     }
+    
+    // Combine methods to retrieve new object
+    @Override
+    public Cromossome getNewCromossome(){
+        Cromossome1 c = new Cromossome1();
+        return(c);
+    }
 
     @Override
     public Cromossome mutate(double probMutate) {
@@ -88,8 +87,9 @@ public class Cromossome1 extends Cromossome<Boolean> {
 
     @Override
     protected double calcFitness() {
-        this.setFitness(Math.abs(x * y * Math.sin((y * Math.PI)/4)));
-        return this.getFitness();
+        x = convertGenes(this.getGenes(), 0, bitsX);
+        y = convertGenes(this.getGenes(), bitsX, bitsX + bitsY);
+        return (Math.abs(x * y * Math.sin((y * Math.PI)/4)));
     }
 
     @Override
@@ -110,7 +110,8 @@ public class Cromossome1 extends Cromossome<Boolean> {
     }
     
     // print the genes sequence
-    private void printGenes() {
+    @Override
+    protected void printGenes() {
         getGenes().forEach((gene) -> {
             System.out.print(gene ? "1" : "0");
         });
