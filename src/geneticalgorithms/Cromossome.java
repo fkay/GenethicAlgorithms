@@ -27,10 +27,11 @@ public abstract class Cromossome<T> {
     /**
      * @param genes the genes to set
      */
-    protected void setGenes(List<T> genes) {
+    protected void setGenes(List<T> genes, boolean calcFit) {
         this.genes = genes;
         // after get the new gens alredy check fitness
-        this.fitness = this.calcFitness();
+        if(calcFit)
+            this.fitness = this.calcFitness();
     }
     
     /**
@@ -56,7 +57,7 @@ public abstract class Cromossome<T> {
     
     // Simple single point crossover with other cromossome. 
     // Return a new Cromossome from the crossover
-    public Cromossome crossover(Cromossome other, double probCross){
+    protected Cromossome crossover(Cromossome other){
         // get crossover point
         int crossPoint = (new Double(Math.random() * this.getSize())).intValue();
         Cromossome newCromossome = getNewCromossome();
@@ -69,7 +70,18 @@ public abstract class Cromossome<T> {
             newGenes.addAll(other.getGenes().subList(0, crossPoint));
             newGenes.addAll(this.getGenes().subList(crossPoint,this.getSize()));
         }
-        newCromossome.setGenes(newGenes);
+        this.setGenes(newGenes, false);
+        return newCromossome;
+    }
+    
+    // get a new Cromossome, subclasses need to override to create its own object
+    public abstract Cromossome getNewCromossome();
+    
+    // Cromossome mutation
+    protected abstract Cromossome mutate(double probMutate);
+    
+    public Cromossome evolve(Cromossome other, double probMutate) {
+        Cromossome newCromossome = crossover(other);
         
         // debug print
         /*System.out.println(String.format("Crossover point: %d", crossPoint));
@@ -80,14 +92,16 @@ public abstract class Cromossome<T> {
         System.out.print("Son     : ");
         newCromossome.printGenes();
         */
+        
+        newCromossome = newCromossome.mutate(probMutate);
+        
+        // debug print
+        /*System.out.print("Son muta: ");
+        newCromossome.printGenes();
+        */
+        
         return newCromossome;
     }
-    
-    // get a new Cromossome, subclasses need to override to create its own object
-    public abstract Cromossome getNewCromossome();
-    
-    // Cromossome mutation
-    public abstract Cromossome mutate(double probMutate);
 
     // Calc cromossome fitness
     protected abstract double calcFitness();

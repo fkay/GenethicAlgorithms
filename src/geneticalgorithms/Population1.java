@@ -40,8 +40,8 @@ public class Population1 extends Population {
         this.setCromossomes(cromossomes);
     }
     
-    public Population1(int size, double probCross, double probMutate) {
-        super(size, probCross, probMutate);
+    public Population1(int size, double probMutate) {
+        super(size, probMutate);
     }
     
 }

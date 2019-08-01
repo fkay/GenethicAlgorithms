@@ -19,7 +19,6 @@ public abstract class Population {
     
     private int generationNum;
     
-    private double probCross;
     private double probMutate;
     private int size;
     
@@ -60,20 +59,6 @@ public abstract class Population {
      */
     public int getGenerationNum() {
         return generationNum;
-    }
-
-    /**
-     * @return the probCross
-     */
-    public double getProbCross() {
-        return probCross;
-    }
-
-    /**
-     * @param probCross the probCross to set
-     */
-    public final void setProbCross(double probCross) {
-        this.probCross = probCross;
     }
 
     /**
@@ -126,8 +111,7 @@ public abstract class Population {
         for(int i=0; i <  getSize(); i++) {
             Cromossome parent1 = select();
             Cromossome parent2 = select(); 
-            Cromossome son = parent1.crossover(parent2, getProbCross());
-            son.mutate(getProbMutate());
+            Cromossome son = parent1.evolve(parent2, getProbMutate());
             
             newGeneration.add(son);
         }
@@ -154,8 +138,7 @@ public abstract class Population {
     }
     
     // construtor recebe parametros da populacao
-    public Population(int size, double probCross, double probMutate) {
-        this.setProbCross(probCross);
+    public Population(int size, double probMutate) {
         this.setProbMutate(probMutate);
         this.setSize(size);
         generationNum = 0;

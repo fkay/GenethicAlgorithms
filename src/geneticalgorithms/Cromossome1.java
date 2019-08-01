@@ -30,35 +30,7 @@ public class Cromossome1 extends Cromossome<Boolean> {
         for(int i = 0; i < bitsX + bitsY; i++) {
             genes.add(Math.random() < 0.5 ? Boolean.TRUE : Boolean.FALSE);
         }
-        this.setGenes(genes);
-    }
-    
-    @Override
-    public Cromossome crossover(Cromossome other, double probCross) {
-        // get crossover point
-        int crossPoint = (new Double(Math.random() * this.getSize())).intValue();
-        Cromossome1 newCromossome = new Cromossome1();
-        List<Boolean> newGenes = new ArrayList();
-        if(Math.random() < 0.5) {
-            newGenes.addAll(this.getGenes().subList(0, crossPoint));
-            newGenes.addAll(other.getGenes().subList(crossPoint,this.getSize()));
-        }
-        else {
-            newGenes.addAll(other.getGenes().subList(0, crossPoint));
-            newGenes.addAll(this.getGenes().subList(crossPoint,this.getSize()));
-        }
-        newCromossome.setGenes(newGenes);
-        
-        // debug print
-        /*System.out.println(String.format("Crossover point: %d", crossPoint));
-        System.out.print("Parent 1: ");
-        this.printGenes();
-        System.out.print("Parent 2: ");
-        ((Cromossome1) other).printGenes();
-        System.out.print("Son     : ");
-        newCromossome.printGenes();
-       */ 
-        return newCromossome;
+        this.setGenes(genes, true);
     }
     
     // Combine methods to retrieve new object
@@ -69,19 +41,14 @@ public class Cromossome1 extends Cromossome<Boolean> {
     }
 
     @Override
-    public Cromossome mutate(double probMutate) {
+    protected Cromossome mutate(double probMutate) {
         List<Boolean> genes = this.getGenes();
         for (int i = 0; i < this.getSize(); i++) {
             if(Math.random() < probMutate) {
                 genes.set(i, !genes.get(i));
             }
         }
-        this.setGenes(genes);
-        
-        // debug print
-        /*System.out.print("Son muta: ");
-        this.printGenes();
-        */
+        this.setGenes(genes, true);
         return this;
     }
 

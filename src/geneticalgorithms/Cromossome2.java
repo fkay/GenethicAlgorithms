@@ -23,7 +23,7 @@ public class Cromossome2 extends Cromossome<Integer> {
         for(int i = 0; i < rows + cols; i++) {
             genes.add(Math.random() < 0.5 ? -1 : 1);
         }
-        this.setGenes(genes);
+        this.setGenes(genes, true);
     }
 
     // change each value at mutation
@@ -36,7 +36,7 @@ public class Cromossome2 extends Cromossome<Integer> {
             }
         }
         // by setting the genes we force recalculate fitness
-        this.setGenes(genes);
+        this.setGenes(genes, true);
         
         // debug print
         /*System.out.print("Son muta: ");
