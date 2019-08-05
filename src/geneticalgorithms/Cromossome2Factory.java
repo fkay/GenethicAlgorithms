@@ -9,12 +9,10 @@ package geneticalgorithms;
  *
  * @author Fabricio
  */
-public class SimpleGA1 extends SimpleGA{
-    final double probMutate = 0.01;
-    
-    public SimpleGA1(int sizePopulation) {
-        Population population = new Population1(sizePopulation, probMutate);
-        
-        this.setPopulation(population);
+public class Cromossome2Factory implements ICromossomeFactory{
+    @Override
+    public Cromossome getNewCromossome() {
+        Cromossome2 c = new Cromossome2();
+        return c;
     }
 }

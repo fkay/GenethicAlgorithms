@@ -12,7 +12,7 @@ import java.util.List;
  *
  * @author Fabricio
  */
-public abstract class Population {
+public class Population {
     private List<Cromossome> cromossomes;
     private Cromossome bestCromossome;
     private double sumFitness = 0;
@@ -21,6 +21,8 @@ public abstract class Population {
     
     private double probMutate;
     private int size;
+    
+    private final ICromossomeFactory cromossomeFactory;
     
     /**
      * @return the cromossomes
@@ -89,10 +91,7 @@ public abstract class Population {
         this.size = size;
     }
     
-    // seleciona individuo
-    protected abstract Cromossome select();
-    
-    // calcula soma das avaliações dos individuos
+    // calculate fitness sum
     private double sumFitness() {
         this.sumFitness = 0;
         getCromossomes().forEach((cromossome) -> {
@@ -102,16 +101,44 @@ public abstract class Population {
         return (this.getSumFitness());
     }
 
-    // metodo que inicia os cromossomos aleatórios da população
-    public abstract void initPopulation();
+    // init Cromossomes population with random values
+    public void initPopulation() {
+        List<Cromossome> cromossomes = new ArrayList();
+        for(int i = 0; i < this.getSize(); i++) {
+            Cromossome cromossome = cromossomeFactory.getNewCromossome();
+            cromossome.initGenes();
+            cromossomes.add(cromossome);
+        }
+        this.setCromossomes(cromossomes);
+    }
     
-    // metodo que constroi proxima geracao
+    // select cromossome using simple roullete
+    protected Cromossome selectRoullete() {
+        Cromossome cromossome = null;
+        double soma = 0;
+        double roullete = Math.random() * this.getSumFitness();
+        for(int i = 0; i < this.getSize(); i++) {
+            cromossome = this.getCromossomes().get(i);
+            soma += cromossome.getFitness();
+            if(soma >= roullete)
+                break;
+        }
+        return cromossome;
+    }
+    
+    // method for cromossome selection
+    // default selects using simple Roullete
+    protected Cromossome select(){
+        return this.selectRoullete();
+    }
+    
+    // generate the next generation usim SGA
     public void nextGeneration(){
         List<Cromossome> newGeneration = new ArrayList();
         for(int i=0; i <  getSize(); i++) {
             Cromossome parent1 = select();
             Cromossome parent2 = select(); 
-            Cromossome son = parent1.evolve(parent2, getProbMutate());
+            Cromossome son = parent1.evolve(parent2, getProbMutate(), cromossomeFactory);
             
             newGeneration.add(son);
         }
@@ -121,11 +148,12 @@ public abstract class Population {
         generationNum++;
     }
     
-    // retorna valor médio das avaliações da população
+    // return the average fitness value
     public double getAvgFitness() {
         return getSumFitness() / getSize();
     }
     
+    // set the best cromossome form the population
     protected void bestFitness() {
         Cromossome best = getCromossomes().get(0);
         
@@ -137,13 +165,15 @@ public abstract class Population {
         this.bestCromossome = best;
     }
     
-    // construtor recebe parametros da populacao
-    public Population(int size, double probMutate) {
+    // Instance object with popupaltion size and probability to mutate
+    public Population(int size, double probMutate, ICromossomeFactory cromossomeFactory) {
         this.setProbMutate(probMutate);
         this.setSize(size);
+        this.cromossomeFactory = cromossomeFactory;
         generationNum = 0;
     }
     
+    // return instance string
     @Override
     public String toString(){
         return String.format("Geração: %d\n"

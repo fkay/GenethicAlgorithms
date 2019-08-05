@@ -14,13 +14,13 @@ import java.util.List;
  */
 public class Cromossome2 extends Cromossome<Integer> {
     // cromossome representa uma matriz 10x10
-    private final int rows = 3, cols = 3;
+    private final int rows = 5, cols = 5;
     
     // init random genes
     @Override 
     public void initGenes(){
         List<Integer> genes = new ArrayList();
-        for(int i = 0; i < rows + cols; i++) {
+        for(int i = 0; i < rows * cols; i++) {
             genes.add(Math.random() < 0.5 ? -1 : 1);
         }
         this.setGenes(genes, true);
@@ -50,18 +50,25 @@ public class Cromossome2 extends Cromossome<Integer> {
     protected double calcFitness() {
         int sum = 0;
         List<Integer> genes = this.getGenes();
-        for(int i = 0; i < rows - 1; i++) {
-            for(int j = 0; j < cols - 1; j++) {
-                sum += genes.get(cols*i + j)*genes.get(cols*(i+1) + j);
-                sum += genes.get(cols*i + j)*genes.get(cols*i + j+1);
+        for(int i = 0; i < rows; i++) {
+            for(int j = 0; j < cols; j++) {
+                if(i < rows - 1)
+                    sum += genes.get(cols*i + j)*genes.get(cols*(i+1) + j);
+                if(j < cols - 1)
+                    sum += genes.get(cols*i + j)*genes.get(cols*i + j+1);
             }
         }
-        return sum;
+        // calc the max negative value
+        int maxNegative = 2 * rows * cols - rows - cols;
+        // sum the max negative to avoid negative values on fitness
+        return sum + maxNegative;
     }
 
+    // retrun string representing the fenotype of the cromossome
     @Override
     protected String fenotype() {
         StringBuilder sb = new StringBuilder();
+        sb.append("\n");
         List<Integer> genes = this.getGenes();
         for(int i = 0; i < rows; i++) {
             for(int j = 0; j < cols; j++) {
@@ -73,18 +80,13 @@ public class Cromossome2 extends Cromossome<Integer> {
             }
             if (i != rows - 1){
                 for(int x = 0; x < cols ; x++)
-                    sb.append("---");
+                    sb.append("-----");
+                sb.append("\n");
             }
-            sb.append("\n");
+            //sb.append("\n");
         }
         
         return sb.toString();
-    }
-
-    @Override
-    public Cromossome getNewCromossome() {
-        Cromossome2 c = new Cromossome2();
-        return c;
     }
 
     @Override
@@ -93,6 +95,14 @@ public class Cromossome2 extends Cromossome<Integer> {
             System.out.print(gene > 0 ? "1" : "0");
         });
         System.out.println();
+    }
+    
+    protected void initMaxGenes() {
+        List<Integer> genes = new ArrayList();
+        for(int i = 0; i < rows * cols; i++) {
+            genes.add(-1);
+        }
+        this.setGenes(genes, true);
     }
     
 }

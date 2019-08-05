@@ -32,13 +32,6 @@ public class Cromossome1 extends Cromossome<Boolean> {
         }
         this.setGenes(genes, true);
     }
-    
-    // Combine methods to retrieve new object
-    @Override
-    public Cromossome getNewCromossome(){
-        Cromossome1 c = new Cromossome1();
-        return(c);
-    }
 
     @Override
     protected Cromossome mutate(double probMutate) {

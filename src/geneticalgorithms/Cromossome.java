@@ -57,10 +57,10 @@ public abstract class Cromossome<T> {
     
     // Simple single point crossover with other cromossome. 
     // Return a new Cromossome from the crossover
-    protected Cromossome crossover(Cromossome other){
+    protected Cromossome crossover(Cromossome other, ICromossomeFactory cromossomeFactory){
         // get crossover point
         int crossPoint = (new Double(Math.random() * this.getSize())).intValue();
-        Cromossome newCromossome = getNewCromossome();
+        Cromossome newCromossome = cromossomeFactory.getNewCromossome();
         List<T> newGenes = new ArrayList();
         if(Math.random() < 0.5) {
             newGenes.addAll(this.getGenes().subList(0, crossPoint));
@@ -70,18 +70,15 @@ public abstract class Cromossome<T> {
             newGenes.addAll(other.getGenes().subList(0, crossPoint));
             newGenes.addAll(this.getGenes().subList(crossPoint,this.getSize()));
         }
-        this.setGenes(newGenes, false);
+        newCromossome.setGenes(newGenes, false);
         return newCromossome;
     }
-    
-    // get a new Cromossome, subclasses need to override to create its own object
-    public abstract Cromossome getNewCromossome();
     
     // Cromossome mutation
     protected abstract Cromossome mutate(double probMutate);
     
-    public Cromossome evolve(Cromossome other, double probMutate) {
-        Cromossome newCromossome = crossover(other);
+    public Cromossome evolve(Cromossome other, double probMutate, ICromossomeFactory cromossomeFactory) {
+        Cromossome newCromossome = crossover(other, cromossomeFactory);
         
         // debug print
         /*System.out.println(String.format("Crossover point: %d", crossPoint));
@@ -117,7 +114,7 @@ public abstract class Cromossome<T> {
     
     @Override
     public String toString() {
-        return String.format("Cromossomo: " + fenotype() + "\n"
+        return String.format("Fenotipo: " + fenotype() + "\n"
                 + "Avaliação: %f\n", this.fitness);
     }
 }
