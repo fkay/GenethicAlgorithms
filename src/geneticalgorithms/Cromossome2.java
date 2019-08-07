@@ -32,6 +32,7 @@ public class Cromossome2 extends Cromossome<Integer> {
         List<Integer> genes = this.getGenes();
         for (int i = 0; i < this.getSize(); i++) {
             if(Math.random() < probMutate) {
+                setMutated(true);
                 genes.set(i, -1 * genes.get(i));
             }
         }
@@ -105,4 +106,8 @@ public class Cromossome2 extends Cromossome<Integer> {
         this.setGenes(genes, true);
     }
     
+    public Cromossome2(){
+        setMutated(false);
+    }
+
 }

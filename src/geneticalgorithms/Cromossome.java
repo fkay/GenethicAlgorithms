@@ -13,9 +13,10 @@ import java.util.List;
  * @author Fabricio
  * @param <T>
  */
-public abstract class Cromossome<T> {
+public abstract class Cromossome<T> implements Comparable<Cromossome> {
     private List<T> genes;
     private double fitness;
+    private boolean mutated;
 
     /**
      * @return the genes
@@ -53,6 +54,20 @@ public abstract class Cromossome<T> {
      */
     protected void setFitness(double fitness) {
         this.fitness = fitness;
+    }
+    
+    /**
+     * @return the mutated
+     */
+    public boolean getMutated(){
+        return mutated;
+    }
+    
+    /**
+     * @param mutated 
+     */
+    protected void setMutated(boolean mutated) {
+        this.mutated = mutated; 
     }
     
     // Simple single point crossover with other cromossome. 
@@ -116,5 +131,15 @@ public abstract class Cromossome<T> {
     public String toString() {
         return String.format("Fenotipo: " + fenotype() + "\n"
                 + "Avaliação: %f\n", this.fitness);
+    }
+   
+    @Override
+    public int compareTo(Cromossome other) {
+        double comp = this.getFitness() - other.getFitness();
+        if (comp < 0)
+            return -1;
+        if (comp > 0)
+            return 1;
+        return 0;
     }
 }

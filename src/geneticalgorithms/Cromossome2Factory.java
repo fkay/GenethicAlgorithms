@@ -10,9 +10,48 @@ package geneticalgorithms;
  * @author Fabricio
  */
 public class Cromossome2Factory implements ICromossomeFactory{
+    private Cromossome2Type type;
+    
+    /**
+     * @return 
+     */
+    public Cromossome2Type getType(){
+        return type;
+    }
+
+    /**
+     * @param value 
+     */
+    public void setType(Cromossome2Type value){
+        type = value;
+    }
+    
+    void Cromossome2Factory() {
+        this.type = Cromossome2Type.a;
+    }
+    
+    void Cromossome2Factory(Cromossome2Type type) {
+        this.type = type;
+    }
+    
     @Override
     public Cromossome getNewCromossome() {
-        Cromossome2 c = new Cromossome2();
+        Cromossome c;
+        switch(type ){
+            case a:
+                c = new Cromossome2();
+                break;
+            case b:
+                c = new Cromossome2b();
+                break;
+            default:
+                c = new Cromossome2();
+        }
         return c;
+    }
+    
+    public static enum Cromossome2Type {
+        a,
+        b
     }
 }

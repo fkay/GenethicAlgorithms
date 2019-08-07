@@ -21,9 +21,9 @@ public class GeneticAlgorithms {
         final int tests = 10;
         
         final int populationSize = 30;
-        final int generations = 300;
+        final int generations = 500;
         
-        final double probMutate = 0.01;
+        final double probMutate = 0.005;
         final ICromossomeFactory cromoFactory = new Cromossome2Factory();
         
         SimpleGA sga = new SimpleGA(populationSize, probMutate, cromoFactory);
@@ -32,7 +32,9 @@ public class GeneticAlgorithms {
 //        cromo.initMaxGenes();
 //        System.out.println(cromo.toString());
         
-        sga.execute(generations);
+        sga.execute(generations, false);
+        
+        sga.summaryToFile("D:\\OneDrive\\IME-BMAC\\7o Sem - 01_2019\\MAP2040 - TC\\Resultados\\summary.csv");
     }
     
 }
