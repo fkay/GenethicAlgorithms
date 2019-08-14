@@ -18,7 +18,13 @@ public class PopulationSorted extends Population{
     public void nextGeneration(){
         super.nextGeneration();
         //this.getCromossomes().sort(Comparator.comparing(c -> c.getFitness()));
-        Collections.sort(this.getCromossomes());
+        Collections.sort(this.getCromossomes(), Collections.reverseOrder());
+    }
+    
+    @Override
+    public void init() {
+        super.init();
+        Collections.sort(this.getCromossomes(), Collections.reverseOrder());
     }
     
     

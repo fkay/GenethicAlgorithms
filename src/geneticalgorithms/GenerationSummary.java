@@ -14,10 +14,12 @@ import java.util.Locale;
 public class GenerationSummary {
     private final Cromossome bestCromossome;
     private final double avgFitness;
+    private final int mutatedCount;
 
-    public GenerationSummary(Cromossome best, double avgFitness) {
+    public GenerationSummary(Cromossome best, double avgFitness, int mutatedCount) {
         this.bestCromossome = best;
         this.avgFitness = avgFitness;
+        this.mutatedCount = mutatedCount;
     }
     
     public double getBest() {
@@ -26,6 +28,10 @@ public class GenerationSummary {
     
     public double getAvg() {
         return avgFitness;
+    }
+    
+    public int getMutatedCount() {
+        return mutatedCount;
     }
     
     public String summaryLine() {

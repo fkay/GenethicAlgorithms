@@ -102,7 +102,7 @@ public class Population {
     }
 
     // init Cromossomes population with random values
-    public void initPopulation() {
+    public void init() {
         List<Cromossome> cromossomes = new ArrayList();
         for(int i = 0; i < this.getSize(); i++) {
             Cromossome cromossome = cromossomeFactory.getNewCromossome();
@@ -151,6 +151,16 @@ public class Population {
     // return the average fitness value
     public double getAvgFitness() {
         return getSumFitness() / getSize();
+    }
+    
+    // return the count of mutated cromossomes
+    public int countMutated() {
+        int mut = 0;
+        for(Cromossome c :getCromossomes()) {
+            if(c.getMutated())
+                mut++;
+        }
+        return mut;
     }
     
     // set the best cromossome form the population

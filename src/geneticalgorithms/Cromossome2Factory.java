@@ -26,18 +26,18 @@ public class Cromossome2Factory implements ICromossomeFactory{
         type = value;
     }
     
-    void Cromossome2Factory() {
+    public Cromossome2Factory() {
         this.type = Cromossome2Type.a;
     }
     
-    void Cromossome2Factory(Cromossome2Type type) {
+    public Cromossome2Factory(Cromossome2Type type) {
         this.type = type;
     }
     
     @Override
     public Cromossome getNewCromossome() {
         Cromossome c;
-        switch(type ){
+        switch(type){
             case a:
                 c = new Cromossome2();
                 break;

@@ -10,7 +10,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 /**
  *
@@ -34,10 +33,12 @@ public class SimpleGA{
         }
         final int step = generations / 15;
         
-        getPopulation().initPopulation();
+        getPopulation().init();
         if(!quiet)
             printGenerationInfo(0);
         bestCromossomeAll = getPopulation().getBestCromossome();
+        summary.add(new GenerationSummary(getPopulation().getBestCromossome(), 
+                            getPopulation().getAvgFitness(), 0));
         for (int i = 0; i < generations; i++) {
             getPopulation().nextGeneration();
             if(!quiet)
@@ -48,7 +49,7 @@ public class SimpleGA{
             
             // append the summary for this generatios
             summary.add(new GenerationSummary(getPopulation().getBestCromossome(), 
-                            getPopulation().getAvgFitness()));
+                            getPopulation().getAvgFitness(), getPopulation().countMutated()));
             
             if (bestCromossomeAll.getFitness() < getPopulation().getBestCromossome().getFitness()) {
                 bestCromossomeAll = getPopulation().getBestCromossome();
@@ -85,11 +86,32 @@ public class SimpleGA{
         return summary;
     }
     
+    /**
+     * @return the Best Cromossome of all generations
+     */
+    public final Cromossome getBestCromossomeAll() {
+        return this.bestCromossomeAll;
+    }
+    
+    /**
+     * @param best 
+     */
+    public final void setBestCromossomeAll(Cromossome best) {
+        this.bestCromossomeAll = best;
+    }
+    
+    // Basic constructor
     public SimpleGA(int sizePopulation, double probMutate, ICromossomeFactory cromossomeFactory) {
         this.population = new Population(sizePopulation, probMutate, cromossomeFactory);
         this.summary = new ArrayList();
     }
     
+    // for subclasse have his own constructor when needed
+    protected SimpleGA() {
+        this.summary = new ArrayList();
+    }
+    
+    // Save summary collection to a file for reports
     public final void summaryToFile(String filename) {
         try(BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
             writer.write("Geracao;" + summary.get(0).summaryHeader());
