@@ -11,7 +11,7 @@ package geneticalgorithms;
  * @author Fabricio
  */
 public class SimpleGASorted extends SimpleGA {
-    final int bestToSave = 5;
+    final int bestToSave = 3;
     
     @Override
     public void execute(int generations, boolean quiet) {
@@ -25,19 +25,24 @@ public class SimpleGASorted extends SimpleGA {
         if(!quiet)
             printGenerationInfo(0);
         this.setBestCromossomeAll(getPopulation().getBestCromossome());
-        this.getSummary().add(new GenerationSummarySorted(getPopulation().getCromossomes().subList(0, bestToSave), 
-                            getPopulation().getAvgFitness(), 0));
+        GenerationStatisticsSorted statistic = new GenerationStatisticsSorted(getPopulation().getSize(), 0);
+        statistic.setPopulationDetails(getPopulation().getAvgFitness(), 
+                getPopulation().getCromossomes().subList(0, bestToSave), 
+                getPopulation().getCromossomes().subList(getPopulation().getCromossomes().size() - bestToSave, getPopulation().getCromossomes().size()));
+        this.getStatistics().add(statistic);
         for (int i = 0; i < generations; i++) {
-            getPopulation().nextGeneration();
+            statistic = new GenerationStatisticsSorted(getPopulation().getSize(), i + 1);
+            getPopulation().nextGeneration(statistic);
             if(!quiet)
                 printGenerationInfo(i);
             else
                 if( i % step == 0)
                     System.out.printf("Geração %d\n", i);
-            
+            statistic.setPopulationDetails(getPopulation().getAvgFitness(), 
+                getPopulation().getCromossomes().subList(0, bestToSave), 
+                getPopulation().getCromossomes().subList(getPopulation().getCromossomes().size() - bestToSave, getPopulation().getCromossomes().size()));
             // append the summary for this generatios
-            this.getSummary().add(new GenerationSummarySorted(getPopulation().getCromossomes().subList(0, bestToSave), 
-                            getPopulation().getAvgFitness(), getPopulation().countMutated()));
+            this.getStatistics().add(statistic);
             
             if (this.getBestCromossomeAll().getFitness() < getPopulation().getBestCromossome().getFitness()) {
                 this.setBestCromossomeAll(getPopulation().getBestCromossome());
@@ -48,8 +53,8 @@ public class SimpleGASorted extends SimpleGA {
     }
     
     
-    public SimpleGASorted(int sizePopulation, double probMutate, ICromossomeFactory cromossomeFactory) {
-        this.setPopulation(new PopulationSorted(sizePopulation, probMutate, cromossomeFactory));
+    public SimpleGASorted(int sizePopulation, double probMutate, double probCrossover, ICromossomeFactory cromossomeFactory) {
+        this.setPopulation(new PopulationSorted(sizePopulation, probMutate, probCrossover, cromossomeFactory));
     }
     
 }

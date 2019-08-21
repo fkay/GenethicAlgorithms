@@ -28,14 +28,17 @@ public class Cromossome2 extends Cromossome<Integer> {
 
     // change each value at mutation
     @Override
-    public Cromossome mutate(double probMutate) {
+    public Cromossome mutate(double probMutate, GenerationStatistics stat) {
         List<Integer> genes = this.getGenes();
         for (int i = 0; i < this.getSize(); i++) {
             if(Math.random() < probMutate) {
                 setMutated(true);
                 genes.set(i, -1 * genes.get(i));
+                stat.incnMutations();
             }
         }
+        if(getMutated())
+            stat.incnCromMutated();
         // by setting the genes we force recalculate fitness
         this.setGenes(genes, true);
         

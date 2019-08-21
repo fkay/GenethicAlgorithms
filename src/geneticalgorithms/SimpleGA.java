@@ -20,7 +20,7 @@ import java.util.ArrayList;
 public class SimpleGA{
     private Population population;
 
-    private List<GenerationSummary> summary;
+    private List<GenerationStatistics> stats;
     
     // the best cromossome of all gnerations
     // can be lost due no elitist selection and mutation
@@ -28,7 +28,7 @@ public class SimpleGA{
     
     public void execute(int generations, boolean quiet) {
         if(getPopulation() == null) {
-            System.out.println("Nenhuma popuplacao configurada");
+            System.out.println("Nenhuma populacao configurada");
             return;
         }
         final int step = generations / 15;
@@ -37,10 +37,12 @@ public class SimpleGA{
         if(!quiet)
             printGenerationInfo(0);
         bestCromossomeAll = getPopulation().getBestCromossome();
-        summary.add(new GenerationSummary(getPopulation().getBestCromossome(), 
-                            getPopulation().getAvgFitness(), 0));
+        GenerationStatistics statistic = new GenerationStatistics(population.getSize(), 0);
+        statistic.setPopulationDetails(population.getAvgFitness(), population.getBestCromossome(), population.getWorstCromossome());
+        stats.add(statistic);
         for (int i = 0; i < generations; i++) {
-            getPopulation().nextGeneration();
+            statistic = new GenerationStatistics(population.getSize(), i + 1);
+            getPopulation().nextGeneration(statistic);
             if(!quiet)
                 printGenerationInfo(i);
             else
@@ -48,8 +50,8 @@ public class SimpleGA{
                     System.out.printf("Geração %d\n", i);
             
             // append the summary for this generatios
-            summary.add(new GenerationSummary(getPopulation().getBestCromossome(), 
-                            getPopulation().getAvgFitness(), getPopulation().countMutated()));
+            statistic.setPopulationDetails(population.getAvgFitness(), population.getBestCromossome(), population.getWorstCromossome());
+            stats.add(statistic);
             
             if (bestCromossomeAll.getFitness() < getPopulation().getBestCromossome().getFitness()) {
                 bestCromossomeAll = getPopulation().getBestCromossome();
@@ -80,10 +82,10 @@ public class SimpleGA{
     }
     
     /**
-     * @return the population
+     * @return the Statisitic
      */
-    public final List getSummary() {
-        return summary;
+    public final List getStatistics() {
+        return stats;
     }
     
     /**
@@ -101,23 +103,23 @@ public class SimpleGA{
     }
     
     // Basic constructor
-    public SimpleGA(int sizePopulation, double probMutate, ICromossomeFactory cromossomeFactory) {
-        this.population = new Population(sizePopulation, probMutate, cromossomeFactory);
-        this.summary = new ArrayList();
+    public SimpleGA(int sizePopulation, double probMutate, 
+            double probCrossover, ICromossomeFactory cromossomeFactory) {
+        this.population = new Population(sizePopulation, probMutate, 
+                probCrossover, cromossomeFactory);
+        this.stats = new ArrayList();
     }
     
     // for subclasse have his own constructor when needed
     protected SimpleGA() {
-        this.summary = new ArrayList();
+        this.stats = new ArrayList();
     }
     
     // Save summary collection to a file for reports
-    public final void summaryToFile(String filename) {
+    public final void statisticsToFile(String filename) {
         try(BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
-            writer.write("Geracao;" + summary.get(0).summaryHeader());
-            int i = 1;
-            for (GenerationSummary gs : summary) {
-                writer.write(String.format("%d;",i++));
+            writer.write(stats.get(0).summaryHeader());
+            for (GenerationStatistics gs : stats) {
                 writer.write(gs.summaryLine());
             }
         }

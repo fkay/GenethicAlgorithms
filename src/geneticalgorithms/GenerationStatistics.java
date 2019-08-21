@@ -20,9 +20,15 @@ public class GenerationStatistics {
     private Cromossome worstCromossome;
     private double avgFitness;
     private final int popSize;
+    private final int generationNumber;
 
-    public GenerationStatistics(int popSize) {
+    public GenerationStatistics(int popSize, int generationNumber) {
         this.popSize = popSize;
+        this.generationNumber = generationNumber;
+        this.nMutations = 0;
+        this.nCromMutated = 0;
+        this.nCromCrossover = 0;
+        this.avgFitness = 0;
     }
 
     /**
@@ -110,28 +116,49 @@ public class GenerationStatistics {
     }
     
     /**
+     * @return the popSize
+     */
+    public int getPopSize() {
+        return popSize;
+    }
+    
+    /**
+     * @return the generationNumber
+     */
+    public int getGenerationNumber() {
+        return generationNumber;
+    }
+    
+    /**
      * @return the mutated cromossomes tax
      */
     public double getMutatedCromossomeTx() {
-        return this.nCromMutated / this.popSize;
+        return 1.0 * this.nCromMutated / this.popSize;
     }
     
     /**
      * @return the crossover cromossomes tax
      */
     public double getCrossoverCromossomeTx() {
-        return this.nCromCrossover / this.popSize;
+        return 1.0 * this.nCromCrossover / this.popSize;
+    }
+    
+    public void setPopulationDetails(double avgFitness, Cromossome best, Cromossome worst) {
+        this.setAvgFitness(avgFitness);
+        this.setBestCromossome(best);
+        this.setWorstCromossome(worst);
     }
     
      public String summaryLine() {
         // Locale.ROOT to use '.' as decimal separator
-        return String.format(Locale.ROOT, "%f; %f; %f; %f; %f\n", 
+        return String.format(Locale.ROOT, "%d; %f; %f; %f; %f; %f\n",
+                this.generationNumber,
                 this.getBestCromossome().getFitness(), this.getWorstCromossome().getFitness(), 
                 this.getAvgFitness(), this.getCrossoverCromossomeTx(),
                 this.getMutatedCromossomeTx());
     }
     public String summaryHeader() {
-        return String.format("Melhor;Pior;Media;Tx Mutacao;Tx Crossover\n");
+        return String.format("Geracao;Melhor;Pior;Media;Tx Crossover;Tx Mutacao\n");
     }
     
 }

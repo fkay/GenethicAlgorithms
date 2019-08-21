@@ -72,28 +72,39 @@ public abstract class Cromossome<T> implements Comparable<Cromossome> {
     
     // Simple single point crossover with other cromossome. 
     // Return a new Cromossome from the crossover
-    protected Cromossome crossover(Cromossome other, ICromossomeFactory cromossomeFactory){
-        // get crossover point
-        int crossPoint = (new Double(Math.random() * this.getSize())).intValue();
-        Cromossome newCromossome = cromossomeFactory.getNewCromossome();
+    protected Cromossome crossover(Cromossome other, double probCrossover,
+            ICromossomeFactory cromossomeFactory, GenerationStatistics stat){
+
         List<T> newGenes = new ArrayList();
-        if(Math.random() < 0.5) {
-            newGenes.addAll(this.getGenes().subList(0, crossPoint));
-            newGenes.addAll(other.getGenes().subList(crossPoint,this.getSize()));
-        }
+        Cromossome newCromossome = cromossomeFactory.getNewCromossome();;
+        if(Math.random() < probCrossover) {
+            stat.incnCromCrossover();
+            // get crossover point
+            int crossPoint = (new Double(Math.random() * this.getSize())).intValue();
+            if(Math.random() < 0.5) {
+                newGenes.addAll(this.getGenes().subList(0, crossPoint));
+                newGenes.addAll(other.getGenes().subList(crossPoint,this.getSize()));
+            }
+            else {
+                newGenes.addAll(other.getGenes().subList(0, crossPoint));
+                newGenes.addAll(this.getGenes().subList(crossPoint,this.getSize()));
+            }
+        } // only copy genes
         else {
-            newGenes.addAll(other.getGenes().subList(0, crossPoint));
-            newGenes.addAll(this.getGenes().subList(crossPoint,this.getSize()));
+            newGenes.addAll(this.getGenes());
         }
         newCromossome.setGenes(newGenes, false);
+        
         return newCromossome;
     }
     
     // Cromossome mutation
-    protected abstract Cromossome mutate(double probMutate);
+    protected abstract Cromossome mutate(double probMutate, GenerationStatistics stat);
     
-    public Cromossome evolve(Cromossome other, double probMutate, ICromossomeFactory cromossomeFactory) {
-        Cromossome newCromossome = crossover(other, cromossomeFactory);
+    public Cromossome evolve(Cromossome other, double probMutate, double probCrossover,
+            ICromossomeFactory cromossomeFactory, GenerationStatistics stat) {
+        
+        Cromossome newCromossome = crossover(other, probCrossover, cromossomeFactory, stat);
         
         // debug print
         /*System.out.println(String.format("Crossover point: %d", crossPoint));
@@ -105,7 +116,7 @@ public abstract class Cromossome<T> implements Comparable<Cromossome> {
         newCromossome.printGenes();
         */
         
-        newCromossome = newCromossome.mutate(probMutate);
+        newCromossome = newCromossome.mutate(probMutate, stat);
         
         // debug print
         /*System.out.print("Son muta: ");

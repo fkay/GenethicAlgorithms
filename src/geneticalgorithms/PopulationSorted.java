@@ -15,8 +15,8 @@ import java.util.Collections;
 public class PopulationSorted extends Population{
     
     @Override
-    public void nextGeneration(){
-        super.nextGeneration();
+    public void nextGeneration(GenerationStatistics stat){
+        super.nextGeneration(stat);
         //this.getCromossomes().sort(Comparator.comparing(c -> c.getFitness()));
         Collections.sort(this.getCromossomes(), Collections.reverseOrder());
     }
@@ -28,8 +28,9 @@ public class PopulationSorted extends Population{
     }
     
     
-    public PopulationSorted(int size, double probMutate, ICromossomeFactory cromossomeFactory) {
-        super(size, probMutate, cromossomeFactory);
+    public PopulationSorted(int size, double probMutate, 
+            double probCrossover, ICromossomeFactory cromossomeFactory) {
+        super(size, probMutate, probCrossover, cromossomeFactory);
     }
     
 }

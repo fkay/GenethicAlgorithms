@@ -5,9 +5,6 @@
  */
 package geneticalgorithms;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  *
  * @author Fabricio
@@ -24,6 +21,7 @@ public class GeneticAlgorithms {
         final int generations = 300;
         
         final double probMutate = 0.005;
+        final double probCrossover = 1.0;
         final ICromossomeFactory cromoFactory = new Cromossome2Factory();
 
 //        Cromossome2 cromo = new Cromossome2();
@@ -31,12 +29,12 @@ public class GeneticAlgorithms {
 //        System.out.println(cromo.toString());
 
         for (int i = 0; i < tests; i++) {
-            SimpleGA sga = new SimpleGASorted(populationSize, probMutate, cromoFactory);
+            SimpleGA sga = new SimpleGASorted(populationSize, probMutate, probCrossover, cromoFactory);
         
             sga.execute(generations, true);
         
-            String filename = String.format("D:\\OneDrive\\IME-BMAC\\7o Sem - 01_2019\\MAP2040 - TC\\Resultados\\summary%2d.csv", i);
-            sga.summaryToFile(filename);
+            String filename = String.format("E:\\OneDrive\\IME-BMAC\\7o Sem - 01_2019\\MAP2040 - TC\\Resultados\\summary%2d.csv", i);
+            sga.statisticsToFile(filename);
         }
     }
     

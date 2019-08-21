@@ -34,13 +34,18 @@ public class Cromossome1 extends Cromossome<Boolean> {
     }
 
     @Override
-    protected Cromossome mutate(double probMutate) {
+    protected Cromossome mutate(double probMutate, GenerationStatistics stat) {
         List<Boolean> genes = this.getGenes();
+        boolean oneGeneMutated = false;
         for (int i = 0; i < this.getSize(); i++) {
             if(Math.random() < probMutate) {
                 genes.set(i, !genes.get(i));
+                stat.incnMutations();
+                oneGeneMutated = true;
             }
         }
+        if(oneGeneMutated)
+            stat.incnCromMutated();
         this.setGenes(genes, true);
         return this;
     }
