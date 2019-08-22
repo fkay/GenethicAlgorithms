@@ -17,6 +17,8 @@ public class GeneticAlgorithms {
     public static void main(String[] args) {
         final int tests = 5;
         
+        final int bestToSave = 3;   // how many cromossomes to save from top an bottom
+        
         final int populationSize = 30;
         final int generations = 300;
         
@@ -29,13 +31,19 @@ public class GeneticAlgorithms {
 //        System.out.println(cromo.toString());
 
         for (int i = 0; i < tests; i++) {
-            SimpleGA sga = new SimpleGASorted(populationSize, probMutate, probCrossover, cromoFactory);
+            SimpleGA sga = new SimpleGASorted(populationSize, probMutate, probCrossover, cromoFactory, bestToSave);
         
             sga.execute(generations, true);
         
+            RandomSearchSorted randomSearchSorted = new RandomSearchSorted(populationSize * generations, cromoFactory, bestToSave);
+            
             String filename = String.format("E:\\OneDrive\\IME-BMAC\\7o Sem - 01_2019\\MAP2040 - TC\\Resultados\\summary%2d.csv", i);
             sga.statisticsToFile(filename);
+            filename = String.format("E:\\OneDrive\\IME-BMAC\\7o Sem - 01_2019\\MAP2040 - TC\\Resultados\\summary%2d_rs.csv", i);
+            randomSearchSorted.statisticsToFile(filename);
         }
+        
+        
     }
     
 }

@@ -11,7 +11,7 @@ package geneticalgorithms;
  * @author Fabricio
  */
 public class SimpleGASorted extends SimpleGA {
-    final int bestToSave = 3;
+    final int bestToSave;
     
     @Override
     public void execute(int generations, boolean quiet) {
@@ -53,8 +53,11 @@ public class SimpleGASorted extends SimpleGA {
     }
     
     
-    public SimpleGASorted(int sizePopulation, double probMutate, double probCrossover, ICromossomeFactory cromossomeFactory) {
+    public SimpleGASorted(int sizePopulation, double probMutate, 
+            double probCrossover, ICromossomeFactory cromossomeFactory,
+            int bestToSave) {
         this.setPopulation(new PopulationSorted(sizePopulation, probMutate, probCrossover, cromossomeFactory));
+        this.bestToSave = bestToSave;
     }
     
 }
