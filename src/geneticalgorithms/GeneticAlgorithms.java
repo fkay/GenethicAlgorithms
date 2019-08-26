@@ -5,6 +5,16 @@
  */
 package geneticalgorithms;
 
+import geneticalgorithms.SGA.SimpleGASorted;
+import geneticalgorithms.SGA.SimpleGA;
+import geneticalgorithms.randomsearch.RandomSearchSorted;
+import geneticalgorithms.cromossomes.ICromossomeFactory;
+import geneticalgorithms.cromossomes.Cromossome2Factory;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Locale;
+
 /**
  *
  * @author Fabricio
@@ -22,9 +32,10 @@ public class GeneticAlgorithms {
         final int populationSize = 30;
         final int generations = 300;
         
-        final double probMutate = 0.005;
-        final double probCrossover = 1.0;
+        final double probMutate = 0.002;
+        final double probCrossover = 0.80;
         final ICromossomeFactory cromoFactory = new Cromossome2Factory();
+        String filename;
 
 //        Cromossome2 cromo = new Cromossome2();
 //        cromo.initMaxGenes();
@@ -37,12 +48,22 @@ public class GeneticAlgorithms {
         
             RandomSearchSorted randomSearchSorted = new RandomSearchSorted(populationSize * generations, cromoFactory, bestToSave);
             
-            String filename = String.format("E:\\OneDrive\\IME-BMAC\\7o Sem - 01_2019\\MAP2040 - TC\\Resultados\\summary%2d.csv", i);
+            filename = String.format("E:\\OneDrive\\IME-BMAC\\7o Sem - 01_2019\\MAP2040 - TC\\Resultados\\summary%2d.csv", i);
             sga.statisticsToFile(filename);
             filename = String.format("E:\\OneDrive\\IME-BMAC\\7o Sem - 01_2019\\MAP2040 - TC\\Resultados\\summary%2d_rs.csv", i);
             randomSearchSorted.statisticsToFile(filename);
         }
         
+        filename = "E:\\OneDrive\\IME-BMAC\\7o Sem - 01_2019\\MAP2040 - TC\\Resultados\\Parameters.csv";
+        try(BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
+            writer.write("tamanho.populacao;geracoes;prob.cross;prob.mut;testes\n");
+            writer.write(String.format(Locale.ROOT, "%d;%d;%f;%f;%d\n", 
+                    populationSize, generations, probCrossover, probMutate, tests));
+        }
+        catch (IOException e) {
+            System.out.println("Erro ao gravar arquivo de resutlados: " + filename);
+            System.out.println(e.getMessage());
+        }
         
     }
     

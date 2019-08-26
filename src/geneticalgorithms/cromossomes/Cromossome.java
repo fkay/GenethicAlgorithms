@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package geneticalgorithms;
+package geneticalgorithms.cromossomes;
 
+import geneticalgorithms.Statistics.GenerationStatistics;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -130,7 +131,7 @@ public abstract class Cromossome<T> implements Comparable<Cromossome> {
     protected abstract double calcFitness();
     
     // Init cromossome random genes
-    protected abstract void initGenes();
+    public abstract void initGenes();
     
     // return the fenotype from this cromossome (what its look like)
     protected abstract String fenotype();

@@ -3,8 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package geneticalgorithms;
+package geneticalgorithms.populations;
 
+import geneticalgorithms.Statistics.GenerationStatistics;
+import geneticalgorithms.cromossomes.ICromossomeFactory;
+import geneticalgorithms.cromossomes.Cromossome;
 import java.util.ArrayList;
 import java.util.List;
 

@@ -3,8 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package geneticalgorithms;
+package geneticalgorithms.randomsearch;
 
+import geneticalgorithms.Statistics.GenerationStatistics;
+import geneticalgorithms.cromossomes.ICromossomeFactory;
+import geneticalgorithms.populations.Population;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
