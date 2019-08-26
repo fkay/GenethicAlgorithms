@@ -5,15 +5,21 @@
  */
 package geneticalgorithms.cromossomes;
 
+import geneticalgorithms.cromossomes.operators.*;
+
 /**
  *
  * @author Fabricio
  */
 public class Cromossome1Factory implements ICromossomeFactory {
-
+    private static ICrossOver cross;
+    
     @Override
     public Cromossome getNewCromossome() {
-        Cromossome1 c = new Cromossome1(); //To change body of generated methods, choose Tools | Templates.
+        if(cross == null)
+            cross = new CrossOverSinglePoint();
+        
+        Cromossome1 c = new Cromossome1(cross); //To change body of generated methods, choose Tools | Templates.
         return(c);
     }
         

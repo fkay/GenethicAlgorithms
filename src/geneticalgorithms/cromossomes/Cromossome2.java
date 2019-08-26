@@ -6,6 +6,7 @@
 package geneticalgorithms.cromossomes;
 
 import geneticalgorithms.Statistics.GenerationStatistics;
+import geneticalgorithms.cromossomes.operators.ICrossOver;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,6 +17,33 @@ import java.util.List;
 public class Cromossome2 extends Cromossome<Integer> {
     // cromossome representa uma matriz 10x10
     private final int rows = 5, cols = 5;
+    private int countp;
+    private int countm;
+    
+    /**
+     * @return the countp
+     */
+    public int getCountp() {
+        return countp;
+    }
+
+    /**
+     * @return the countm
+     */
+    public int getCountm() {
+        return countm;
+    }
+    
+     protected void countGenes() {
+        countp = 0;
+        countm = 0;
+        for(int gene : getGenes()){
+            if(gene > 0)
+                countp++;
+            else
+                countm++;
+        }
+    }
     
     // init random genes
     @Override 
@@ -53,6 +81,8 @@ public class Cromossome2 extends Cromossome<Integer> {
     // Calc new fitness for the Cromossome
     @Override
     protected double calcFitness() {
+        countGenes();
+        
         int sum = 0;
         List<Integer> genes = this.getGenes();
         for(int i = 0; i < rows; i++) {
@@ -91,6 +121,8 @@ public class Cromossome2 extends Cromossome<Integer> {
             //sb.append("\n");
         }
         
+        sb.append(String.format("\n#1: %3d | #-1: %3d\n", countp, countm));
+        
         return sb.toString();
     }
 
@@ -110,7 +142,8 @@ public class Cromossome2 extends Cromossome<Integer> {
         this.setGenes(genes, true);
     }
     
-    public Cromossome2(){
+    public Cromossome2(ICrossOver crossover){
+        super(crossover);
         setMutated(false);
     }
 

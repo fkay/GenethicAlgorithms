@@ -5,12 +5,15 @@
  */
 package geneticalgorithms.cromossomes;
 
+import geneticalgorithms.cromossomes.operators.*;
+
 /**
  *
  * @author Fabricio
  */
 public class Cromossome2Factory implements ICromossomeFactory{
     private Cromossome2Type type;
+    private ICrossOver cross;
     
     /**
      * @return 
@@ -28,10 +31,25 @@ public class Cromossome2Factory implements ICromossomeFactory{
     
     public Cromossome2Factory() {
         this.type = Cromossome2Type.a;
+        cross = new CrossOverSinglePoint();
     }
     
     public Cromossome2Factory(Cromossome2Type type) {
         this.type = type;
+        
+        switch(type) {
+            case a:
+                cross = new CrossOverSinglePoint();
+                break;
+            case b:
+                cross = new CrossOverTwoPoints();
+               break;
+            case c:
+                cross = new CrossOverUniform();
+                break;
+            default:
+                cross = new CrossOverSinglePoint();
+        }
     }
     
     @Override
@@ -39,19 +57,23 @@ public class Cromossome2Factory implements ICromossomeFactory{
         Cromossome c;
         switch(type){
             case a:
-                c = new Cromossome2();
+                c = new Cromossome2(cross);
                 break;
             case b:
-                c = new Cromossome2b();
+                c = new Cromossome2b(cross);
+                break;
+            case c:
+                c = new Cromossome2(cross);
                 break;
             default:
-                c = new Cromossome2();
+                c = new Cromossome2(cross);
         }
         return c;
     }
     
     public static enum Cromossome2Type {
         a,
-        b
+        b,
+        c
     }
 }

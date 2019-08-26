@@ -34,7 +34,7 @@ public class GeneticAlgorithms {
         
         final double probMutate = 0.002;
         final double probCrossover = 0.80;
-        final ICromossomeFactory cromoFactory = new Cromossome2Factory();
+        final ICromossomeFactory cromoFactory = new Cromossome2Factory(Cromossome2Factory.Cromossome2Type.c);
         String filename;
 
 //        Cromossome2 cromo = new Cromossome2();

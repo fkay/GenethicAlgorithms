@@ -6,6 +6,7 @@
 package geneticalgorithms.cromossomes;
 
 import geneticalgorithms.Statistics.GenerationStatistics;
+import geneticalgorithms.cromossomes.operators.ICrossOver;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +25,10 @@ public class Cromossome1 extends Cromossome<Boolean> {
     private final double fator = (maxVal - minVal) / Math.pow(2, bitsX);
     
     private double x,y;
+    
+    public Cromossome1(ICrossOver crossover) {
+        super(crossover);
+    }
     
     @Override
     public void initGenes(){

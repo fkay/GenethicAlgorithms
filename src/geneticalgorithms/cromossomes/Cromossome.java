@@ -6,6 +6,7 @@
 package geneticalgorithms.cromossomes;
 
 import geneticalgorithms.Statistics.GenerationStatistics;
+import geneticalgorithms.cromossomes.operators.ICrossOver;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,6 +19,12 @@ public abstract class Cromossome<T> implements Comparable<Cromossome> {
     private List<T> genes;
     private double fitness;
     private boolean mutated;
+    
+    private final ICrossOver crossOver;
+    
+    public Cromossome(ICrossOver crossover) {
+        this.crossOver = crossover;
+    }
 
     /**
      * @return the genes
@@ -29,7 +36,7 @@ public abstract class Cromossome<T> implements Comparable<Cromossome> {
     /**
      * @param genes the genes to set
      */
-    protected void setGenes(List<T> genes, boolean calcFit) {
+    public void setGenes(List<T> genes, boolean calcFit) {
         this.genes = genes;
         // after get the new gens alredy check fitness
         if(calcFit)
@@ -76,27 +83,7 @@ public abstract class Cromossome<T> implements Comparable<Cromossome> {
     protected Cromossome crossover(Cromossome other, double probCrossover,
             ICromossomeFactory cromossomeFactory, GenerationStatistics stat){
 
-        List<T> newGenes = new ArrayList();
-        Cromossome newCromossome = cromossomeFactory.getNewCromossome();;
-        if(Math.random() < probCrossover) {
-            stat.incnCromCrossover();
-            // get crossover point
-            int crossPoint = (new Double(Math.random() * this.getSize())).intValue();
-            if(Math.random() < 0.5) {
-                newGenes.addAll(this.getGenes().subList(0, crossPoint));
-                newGenes.addAll(other.getGenes().subList(crossPoint,this.getSize()));
-            }
-            else {
-                newGenes.addAll(other.getGenes().subList(0, crossPoint));
-                newGenes.addAll(this.getGenes().subList(crossPoint,this.getSize()));
-            }
-        } // only copy genes
-        else {
-            newGenes.addAll(this.getGenes());
-        }
-        newCromossome.setGenes(newGenes, false);
-        
-        return newCromossome;
+        return crossOver.crossover(this, other, probCrossover, cromossomeFactory, stat);
     }
     
     // Cromossome mutation
