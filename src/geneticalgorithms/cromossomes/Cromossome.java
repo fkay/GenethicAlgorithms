@@ -22,6 +22,8 @@ public abstract class Cromossome<T> implements Comparable<Cromossome> {
     
     private final ICrossOver crossOver;
     
+    private static List states = null;
+    
     public Cromossome(ICrossOver crossover) {
         this.crossOver = crossover;
     }
@@ -74,7 +76,7 @@ public abstract class Cromossome<T> implements Comparable<Cromossome> {
     /**
      * @param mutated 
      */
-    protected void setMutated(boolean mutated) {
+    public void setMutated(boolean mutated) {
         this.mutated = mutated; 
     }
     
@@ -88,6 +90,10 @@ public abstract class Cromossome<T> implements Comparable<Cromossome> {
     
     // Cromossome mutation
     protected abstract Cromossome mutate(double probMutate, GenerationStatistics stat);
+    
+    public List<T> getPossibleStates() {
+        return this.states;
+    }
     
     public Cromossome evolve(Cromossome other, double probMutate, double probCrossover,
             ICromossomeFactory cromossomeFactory, GenerationStatistics stat) {

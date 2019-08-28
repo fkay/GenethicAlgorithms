@@ -8,6 +8,7 @@ package geneticalgorithms.cromossomes;
 import geneticalgorithms.Statistics.GenerationStatistics;
 import geneticalgorithms.cromossomes.operators.ICrossOver;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -19,6 +20,8 @@ public class Cromossome2 extends Cromossome<Integer> {
     private final int rows = 5, cols = 5;
     private int countp;
     private int countm;
+    
+    private static List states = Arrays.asList(-1,1);
     
     /**
      * @return the countp

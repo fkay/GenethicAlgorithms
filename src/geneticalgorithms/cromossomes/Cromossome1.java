@@ -8,6 +8,7 @@ package geneticalgorithms.cromossomes;
 import geneticalgorithms.Statistics.GenerationStatistics;
 import geneticalgorithms.cromossomes.operators.ICrossOver;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -23,6 +24,8 @@ public class Cromossome1 extends Cromossome<Boolean> {
     private final int bitsY = 15;
     
     private final double fator = (maxVal - minVal) / Math.pow(2, bitsX);
+    
+    private static List states = Arrays.asList(true, false);
     
     private double x,y;
     
