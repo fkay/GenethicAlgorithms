@@ -32,7 +32,7 @@ public class GeneticAlgorithms {
         final int populationSize = 30;
         final int generations = 300;
         
-        final double probMutate = 0.002;
+        final double probMutate = 0.005;
         final double probCrossover = 0.80;
         final ICromossomeFactory cromoFactory = new Cromossome2Factory(Cromossome2Factory.Cromossome2Type.c);
         String filename;

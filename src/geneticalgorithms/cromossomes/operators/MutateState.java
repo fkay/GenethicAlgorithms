@@ -8,27 +8,38 @@ package geneticalgorithms.cromossomes.operators;
 import geneticalgorithms.Statistics.GenerationStatistics;
 import geneticalgorithms.cromossomes.Cromossome;
 import java.util.List;
+import org.apache.commons.math3.distribution.BinomialDistribution;
 
 /**
  *
  * @author Fabricio Kassardjian
  */
 public class MutateState implements IMutate{
+    private static BinomialDistribution bdist;
+    
     @Override
     public Cromossome mutate(Cromossome me, double probMutate, GenerationStatistics stat) {
+        if(bdist == null || bdist.getProbabilityOfSuccess() != probMutate) {
+            bdist = new BinomialDistribution(me.getSize(), probMutate);
+        }
+        int genesToMute = bdist.sample();
+
+        if(genesToMute == 0) {
+            me.setGenes(me.getGenes(), true);
+            return me;
+        }
+        
         List states = me.getPossibleStates();
         
-                
         List genes = me.getGenes();
-        for (int i = 0; i < me.getSize(); i++) {
-            if(Math.random() < probMutate) {
-                me.setMutated(true);
-                //genes.set(i, -1 * genes.get(i));
-                int choice = (int) (Math.random() * states.size());
-                genes.set(i, states.get(choice));
-                stat.incnMutations();
-            }
+        for (int i = 0; i < genesToMute; i++) {
+            me.setMutated(true);
+            int index = (int) (Math.random() * genes.size());
+            int choice = (int) (Math.random() * states.size());
+            genes.set(index, states.get(choice));
+            stat.incnMutations();
         }
+        
         if(me.getMutated())
             stat.incnCromMutated();
         // by setting the genes we force recalculate fitness
