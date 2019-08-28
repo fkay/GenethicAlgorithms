@@ -16,6 +16,10 @@ import java.util.List;
  * @author fkay1
  */
 public class CrossOverUniform implements ICrossOver{
+    
+    public CrossOverUniform(){
+        System.out.println("Crossover uniform");
+    }
 
     @Override
     public Cromossome crossover(Cromossome me, Cromossome other, double probCrossover, 

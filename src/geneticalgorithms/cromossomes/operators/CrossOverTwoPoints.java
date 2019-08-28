@@ -6,8 +6,7 @@
 package geneticalgorithms.cromossomes.operators;
 
 import geneticalgorithms.Statistics.GenerationStatistics;
-import geneticalgorithms.cromossomes.Cromossome;
-import geneticalgorithms.cromossomes.ICromossomeFactory;
+import geneticalgorithms.cromossomes.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,6 +15,10 @@ import java.util.List;
  * @author fkay1
  */
 public class CrossOverTwoPoints implements ICrossOver{
+    
+    public CrossOverTwoPoints() {
+        System.out.println("Crossover two points");
+    }
 
     @Override
     public Cromossome crossover(Cromossome me, Cromossome other, double probCrossover, 

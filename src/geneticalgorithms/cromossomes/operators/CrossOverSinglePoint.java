@@ -16,6 +16,10 @@ import java.util.List;
  * @author fkay1
  */
 public class CrossOverSinglePoint implements ICrossOver{
+    
+    public CrossOverSinglePoint() {
+        System.out.println("Crossover single point");
+    }
 
     @Override
     public Cromossome crossover(Cromossome me, Cromossome other, double probCrossover, 
