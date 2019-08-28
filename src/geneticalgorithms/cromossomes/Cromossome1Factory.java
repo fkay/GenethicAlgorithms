@@ -12,14 +12,12 @@ import geneticalgorithms.cromossomes.operators.*;
  * @author Fabricio
  */
 public class Cromossome1Factory implements ICromossomeFactory {
-    private static ICrossOver cross;
+    private static ICrossOver cross = new CrossOverSinglePoint();
+    private static IMutate mute = new MutateState();
     
     @Override
     public Cromossome getNewCromossome() {
-        if(cross == null)
-            cross = new CrossOverSinglePoint();
-        
-        Cromossome1 c = new Cromossome1(cross); //To change body of generated methods, choose Tools | Templates.
+        Cromossome1 c = new Cromossome1(cross, mute); //To change body of generated methods, choose Tools | Templates.
         return(c);
     }
         

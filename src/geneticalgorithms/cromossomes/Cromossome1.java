@@ -5,8 +5,7 @@
  */
 package geneticalgorithms.cromossomes;
 
-import geneticalgorithms.Statistics.GenerationStatistics;
-import geneticalgorithms.cromossomes.operators.ICrossOver;
+import geneticalgorithms.cromossomes.operators.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -25,12 +24,11 @@ public class Cromossome1 extends Cromossome<Boolean> {
     
     private final double fator = (maxVal - minVal) / Math.pow(2, bitsX);
     
-    private static List states = Arrays.asList(true, false);
-    
     private double x,y;
     
-    public Cromossome1(ICrossOver crossover) {
-        super(crossover);
+    public Cromossome1(ICrossOver crossover, IMutate mutate) {
+        super(crossover, mutate);
+        super.setStates(Arrays.asList(true,false));
     }
     
     @Override
@@ -40,23 +38,6 @@ public class Cromossome1 extends Cromossome<Boolean> {
             genes.add(Math.random() < 0.5 ? Boolean.TRUE : Boolean.FALSE);
         }
         this.setGenes(genes, true);
-    }
-
-    @Override
-    protected Cromossome mutate(double probMutate, GenerationStatistics stat) {
-        List<Boolean> genes = this.getGenes();
-        boolean oneGeneMutated = false;
-        for (int i = 0; i < this.getSize(); i++) {
-            if(Math.random() < probMutate) {
-                genes.set(i, !genes.get(i));
-                stat.incnMutations();
-                oneGeneMutated = true;
-            }
-        }
-        if(oneGeneMutated)
-            stat.incnCromMutated();
-        this.setGenes(genes, true);
-        return this;
     }
 
     @Override

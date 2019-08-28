@@ -14,6 +14,7 @@ import geneticalgorithms.cromossomes.operators.*;
 public class Cromossome2Factory implements ICromossomeFactory{
     private Cromossome2Type type;
     private ICrossOver cross;
+    private IMutate mute;
     
     /**
      * @return 
@@ -32,11 +33,12 @@ public class Cromossome2Factory implements ICromossomeFactory{
     public Cromossome2Factory() {
         this.type = Cromossome2Type.a;
         cross = new CrossOverSinglePoint();
+        mute = new MutateState();
     }
     
     public Cromossome2Factory(Cromossome2Type type) {
         this.type = type;
-        
+        mute = new MutateState();
         switch(type) {
             case a:
                 cross = new CrossOverSinglePoint();
@@ -57,16 +59,16 @@ public class Cromossome2Factory implements ICromossomeFactory{
         Cromossome c;
         switch(type){
             case a:
-                c = new Cromossome2(cross);
+                c = new Cromossome2(cross, mute);
                 break;
             case b:
-                c = new Cromossome2b(cross);
+                c = new Cromossome2b(cross, mute);
                 break;
             case c:
-                c = new Cromossome2(cross);
+                c = new Cromossome2(cross, mute);
                 break;
             default:
-                c = new Cromossome2(cross);
+                c = new Cromossome2(cross, mute);
         }
         return c;
     }

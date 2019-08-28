@@ -14,9 +14,11 @@ import java.util.List;
  * @author Fabricio Kassardjian
  */
 public class MutateState implements IMutate{
+    @Override
     public Cromossome mutate(Cromossome me, double probMutate, GenerationStatistics stat) {
         List states = me.getPossibleStates();
         
+                
         List genes = me.getGenes();
         for (int i = 0; i < me.getSize(); i++) {
             if(Math.random() < probMutate) {

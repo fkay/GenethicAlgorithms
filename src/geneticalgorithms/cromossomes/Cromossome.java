@@ -6,7 +6,7 @@
 package geneticalgorithms.cromossomes;
 
 import geneticalgorithms.Statistics.GenerationStatistics;
-import geneticalgorithms.cromossomes.operators.ICrossOver;
+import geneticalgorithms.cromossomes.operators.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,11 +21,13 @@ public abstract class Cromossome<T> implements Comparable<Cromossome> {
     private boolean mutated;
     
     private final ICrossOver crossOver;
+    private final IMutate imutate;
     
     private static List states = null;
     
-    public Cromossome(ICrossOver crossover) {
+    public Cromossome(ICrossOver crossover, IMutate mutate) {
         this.crossOver = crossover;
+        this.imutate = mutate;
     }
 
     /**
@@ -89,7 +91,9 @@ public abstract class Cromossome<T> implements Comparable<Cromossome> {
     }
     
     // Cromossome mutation
-    protected abstract Cromossome mutate(double probMutate, GenerationStatistics stat);
+    protected Cromossome mutate(double probMutate, GenerationStatistics stat) {
+        return imutate.mutate(this, probMutate, stat);
+    }
     
     public List<T> getPossibleStates() {
         return this.states;
@@ -131,6 +135,10 @@ public abstract class Cromossome<T> implements Comparable<Cromossome> {
     
     // print the genes
     protected abstract void printGenes();
+    
+    protected void setStates(List newStates) {
+        this.states = newStates;
+    }
     
     @Override
     public String toString() {

@@ -5,14 +5,14 @@
  */
 package geneticalgorithms.cromossomes;
 
-import geneticalgorithms.cromossomes.operators.ICrossOver;
+import geneticalgorithms.cromossomes.operators.*;
 
 /**
  * Crommosome2b - uses two point Crossover
  * @author Fabricio
  */
 public class Cromossome2b extends Cromossome2 {
-    public Cromossome2b(ICrossOver crossover){
-        super(crossover);
+    public Cromossome2b(ICrossOver crossover, IMutate mutate){
+        super(crossover, mutate);
     }    
 }

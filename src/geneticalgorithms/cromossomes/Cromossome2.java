@@ -5,8 +5,7 @@
  */
 package geneticalgorithms.cromossomes;
 
-import geneticalgorithms.Statistics.GenerationStatistics;
-import geneticalgorithms.cromossomes.operators.ICrossOver;
+import geneticalgorithms.cromossomes.operators.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -20,8 +19,6 @@ public class Cromossome2 extends Cromossome<Integer> {
     private final int rows = 5, cols = 5;
     private int countp;
     private int countm;
-    
-    private static List states = Arrays.asList(-1,1);
     
     /**
      * @return the countp
@@ -56,29 +53,6 @@ public class Cromossome2 extends Cromossome<Integer> {
             genes.add(Math.random() < 0.5 ? -1 : 1);
         }
         this.setGenes(genes, true);
-    }
-
-    // change each value at mutation
-    @Override
-    public Cromossome mutate(double probMutate, GenerationStatistics stat) {
-        List<Integer> genes = this.getGenes();
-        for (int i = 0; i < this.getSize(); i++) {
-            if(Math.random() < probMutate) {
-                setMutated(true);
-                genes.set(i, -1 * genes.get(i));
-                stat.incnMutations();
-            }
-        }
-        if(getMutated())
-            stat.incnCromMutated();
-        // by setting the genes we force recalculate fitness
-        this.setGenes(genes, true);
-        
-        // debug print
-        /*System.out.print("Son muta: ");
-        this.printGenes();
-        */
-        return this;
     }
 
     // Calc new fitness for the Cromossome
@@ -145,8 +119,9 @@ public class Cromossome2 extends Cromossome<Integer> {
         this.setGenes(genes, true);
     }
     
-    public Cromossome2(ICrossOver crossover){
-        super(crossover);
+    public Cromossome2(ICrossOver crossover, IMutate mutate){
+        super(crossover, mutate);
+        super.setStates(Arrays.asList(-1,1));
         setMutated(false);
     }
 
