@@ -26,9 +26,11 @@ public class Cromossome1 extends Cromossome<Boolean> {
     
     private double x,y;
     
+    private final List<Boolean> states;
+    
     public Cromossome1(ICrossOver crossover, IMutate mutate) {
         super(crossover, mutate);
-        super.setStates(Arrays.asList(true,false));
+        states = Arrays.asList(true,false);
     }
     
     @Override
@@ -52,6 +54,10 @@ public class Cromossome1 extends Cromossome<Boolean> {
         return String.format("x = %.5f | y = %.5f", x, y);
     }
     
+    @Override
+    public List<Boolean> getPossibleStates() {
+        return states;
+    }
 
     // Método que converte genes binários em inteiro
     private double convertGenes(List<Boolean> genes, int start, int end) {

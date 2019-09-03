@@ -20,6 +20,8 @@ public class Cromossome2 extends Cromossome<Integer> {
     private int countp;
     private int countm;
     
+    private final List<Integer> states;
+    
     /**
      * @return the countp
      */
@@ -119,9 +121,14 @@ public class Cromossome2 extends Cromossome<Integer> {
         this.setGenes(genes, true);
     }
     
+    @Override
+    public List<Integer> getPossibleStates() {
+        return states;
+    }
+    
     public Cromossome2(ICrossOver crossover, IMutate mutate){
         super(crossover, mutate);
-        super.setStates(Arrays.asList(-1,1));
+        states = Arrays.asList(-1,1);
         setMutated(false);
     }
 
