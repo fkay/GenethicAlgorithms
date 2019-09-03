@@ -72,10 +72,7 @@ public class Cromossome2 extends Cromossome<Integer> {
                     sum += genes.get(cols*i + j)*genes.get(cols*i + j+1);
             }
         }
-        // calc the max negative value
-        int maxNegative = 2 * rows * cols - rows - cols;
-        // sum the max negative to avoid negative values on fitness
-        return sum + maxNegative;
+        return Math.pow(1.3, sum) / 20;
     }
 
     // retrun string representing the fenotype of the cromossome
