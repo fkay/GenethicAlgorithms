@@ -13,11 +13,12 @@ import java.util.Collections;
 /**
  *
  * @author Fabricio
+ * @param <T> genes type
  */
-public class PopulationSorted extends Population{
+public class PopulationSorted<T> extends Population<T>{
     
     @Override
-    public void nextGeneration(GenerationStatistics stat){
+    public void nextGeneration(GenerationStatistics<T> stat){
         super.nextGeneration(stat);
         //this.getCromossomes().sort(Comparator.comparing(c -> c.getFitness()));
         Collections.sort(this.getCromossomes(), Collections.reverseOrder());
@@ -29,9 +30,15 @@ public class PopulationSorted extends Population{
         Collections.sort(this.getCromossomes(), Collections.reverseOrder());
     }
     
-    
+    /**
+     *
+     * @param size size of population
+     * @param probMutate probability to mutate each gene
+     * @param probCrossover probabilty to crossover
+     * @param cromossomeFactory factory for crmossomes
+     */
     public PopulationSorted(int size, double probMutate, 
-            double probCrossover, ICromossomeFactory cromossomeFactory) {
+            double probCrossover, ICromossomeFactory<T> cromossomeFactory) {
         super(size, probMutate, probCrossover, cromossomeFactory);
     }
     

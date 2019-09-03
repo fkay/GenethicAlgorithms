@@ -13,8 +13,9 @@ import geneticalgorithms.populations.PopulationSorted;
 /**
  *
  * @author Fabricio
+ * @param <T> Type of genes
  */
-public class SimpleGASorted extends SimpleGA {
+public class SimpleGASorted<T> extends SimpleGA<T> {
     final int bestToSave;
     
     @Override
@@ -29,13 +30,13 @@ public class SimpleGASorted extends SimpleGA {
         if(!quiet)
             printGenerationInfo(0);
         this.setBestCromossomeAll(getPopulation().getBestCromossome());
-        GenerationStatisticsSorted statistic = new GenerationStatisticsSorted(getPopulation().getSize(), 0);
+        GenerationStatisticsSorted<T> statistic = new GenerationStatisticsSorted<>(getPopulation().getSize(), 0);
         statistic.setPopulationDetails(getPopulation().getAvgFitness(), 
                 getPopulation().getCromossomes().subList(0, bestToSave), 
                 getPopulation().getCromossomes().subList(getPopulation().getCromossomes().size() - bestToSave, getPopulation().getCromossomes().size()));
         this.getStatistics().add(statistic);
         for (int i = 0; i < generations; i++) {
-            statistic = new GenerationStatisticsSorted(getPopulation().getSize(), i + 1);
+            statistic = new GenerationStatisticsSorted<>(getPopulation().getSize(), i + 1);
             getPopulation().nextGeneration(statistic);
             if(!quiet)
                 printGenerationInfo(i);
@@ -58,9 +59,9 @@ public class SimpleGASorted extends SimpleGA {
     
     
     public SimpleGASorted(int sizePopulation, double probMutate, 
-            double probCrossover, ICromossomeFactory cromossomeFactory,
+            double probCrossover, ICromossomeFactory<T> cromossomeFactory,
             int bestToSave) {
-        this.setPopulation(new PopulationSorted(sizePopulation, probMutate, probCrossover, cromossomeFactory));
+        this.setPopulation(new PopulationSorted<>(sizePopulation, probMutate, probCrossover, cromossomeFactory));
         this.bestToSave = bestToSave;
     }
     

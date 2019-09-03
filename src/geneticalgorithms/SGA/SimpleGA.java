@@ -20,15 +20,16 @@ import java.util.ArrayList;
  * @author Fabricio
  * Classe abstrata que executa o algoritmo genético simples
  * T - classe da populacao
+ * @param <T> type of genes
  */
-public class SimpleGA{
-    private Population population;
+public class SimpleGA<T>{
+    private Population<T> population;
 
-    private List<GenerationStatistics> stats;
+    private final List<GenerationStatistics<T>> stats;
     
     // the best cromossome of all gnerations
     // can be lost due no elitist selection and mutation
-    private Cromossome bestCromossomeAll;
+    private Cromossome<T> bestCromossomeAll;
     
     public void execute(int generations, boolean quiet) {
         if(getPopulation() == null) {
@@ -41,11 +42,11 @@ public class SimpleGA{
         if(!quiet)
             printGenerationInfo(0);
         bestCromossomeAll = getPopulation().getBestCromossome();
-        GenerationStatistics statistic = new GenerationStatistics(population.getSize(), 0);
+        GenerationStatistics<T> statistic = new GenerationStatistics<>(population.getSize(), 0);
         statistic.setPopulationDetails(population.getAvgFitness(), population.getBestCromossome(), population.getWorstCromossome());
         stats.add(statistic);
         for (int i = 0; i < generations; i++) {
-            statistic = new GenerationStatistics(population.getSize(), i + 1);
+            statistic = new GenerationStatistics<>(population.getSize(), i + 1);
             getPopulation().nextGeneration(statistic);
             if(!quiet)
                 printGenerationInfo(i);
@@ -74,49 +75,49 @@ public class SimpleGA{
     /**
      * @return the population
      */
-    public final Population getPopulation() {
+    public final Population<T> getPopulation() {
         return population;
     }
 
     /**
      * @param population the population to set
      */
-    public final void setPopulation(Population population) {
+    public final void setPopulation(Population<T> population) {
         this.population = population;
     }
     
     /**
      * @return the Statisitic
      */
-    public final List getStatistics() {
+    public final List<GenerationStatistics<T>> getStatistics() {
         return stats;
     }
     
     /**
      * @return the Best Cromossome of all generations
      */
-    public final Cromossome getBestCromossomeAll() {
+    public final Cromossome<T> getBestCromossomeAll() {
         return this.bestCromossomeAll;
     }
     
     /**
      * @param best 
      */
-    public final void setBestCromossomeAll(Cromossome best) {
+    public final void setBestCromossomeAll(Cromossome<T> best) {
         this.bestCromossomeAll = best;
     }
     
     // Basic constructor
     public SimpleGA(int sizePopulation, double probMutate, 
-            double probCrossover, ICromossomeFactory cromossomeFactory) {
-        this.population = new Population(sizePopulation, probMutate, 
+            double probCrossover, ICromossomeFactory<T> cromossomeFactory) {
+        this.population = new Population<>(sizePopulation, probMutate, 
                 probCrossover, cromossomeFactory);
-        this.stats = new ArrayList();
+        this.stats = new ArrayList<>();
     }
     
     // for subclasse have his own constructor when needed
     protected SimpleGA() {
-        this.stats = new ArrayList();
+        this.stats = new ArrayList<>();
     }
     
     // Save summary collection to a file for reports

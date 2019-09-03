@@ -15,33 +15,34 @@ import java.io.IOException;
 /**
  *
  * @author fkay1
+ * @param <T> Genes type
  */
-public class RandomSearch {
-    private Population population;
+public class RandomSearch<T> {
+    private Population<T> population;
     
-    private GenerationStatistics stats;
+    private GenerationStatistics<T> stats;
     
-    protected final void setPopulation(Population pop) {
+    protected final void setPopulation(Population<T> pop) {
         this.population = pop;
     }
     
-    public final Population getPopulation() {
+    public final Population<T> getPopulation() {
         return this.population;
     }
     
-    protected final void setStats(GenerationStatistics stats) {
+    protected final void setStats(GenerationStatistics<T> stats) {
         this.stats = stats;
     }
     
-    public final GenerationStatistics getStats() {
+    public final GenerationStatistics<T> getStats() {
         return this.stats;
     }
     
-    public RandomSearch(int size, ICromossomeFactory cromossomeFactory) {
-        population = new Population(size, 0, 0, cromossomeFactory);
+    public RandomSearch(int size, ICromossomeFactory<T> cromossomeFactory) {
+        population = new Population<>(size, 0, 0, cromossomeFactory);
         population.init();
         
-        stats = new GenerationStatistics(population.getSize(), 0);
+        stats = new GenerationStatistics<>(population.getSize(), 0);
         
         stats.setPopulationDetails(population.getAvgFitness(), population.getBestCromossome(), population.getWorstCromossome());
         

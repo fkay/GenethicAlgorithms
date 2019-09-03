@@ -13,9 +13,9 @@ import java.util.Locale;
  *
  * @author fkay1
  */
-public class GenerationStatisticsSorted extends GenerationStatistics {
-    private List<Cromossome> topCromossomes;
-    private List<Cromossome> bottomCromossomes;
+public class GenerationStatisticsSorted<T> extends GenerationStatistics<T> {
+    private List<Cromossome<T>> topCromossomes;
+    private List<Cromossome<T>> bottomCromossomes;
     
     public GenerationStatisticsSorted(int popSize, int generationNumber) {
         super(popSize, generationNumber);
@@ -24,14 +24,14 @@ public class GenerationStatisticsSorted extends GenerationStatistics {
     /**
      * @return the topCromossomes
      */
-    public List<Cromossome> getTopCromossomes() {
+    public List<Cromossome<T>> getTopCromossomes() {
         return topCromossomes;
     }
 
     /**
      * @param topCromossomes the topCromossomes to set
      */
-    public void setTopCromossomes(List<Cromossome> topCromossomes) {
+    public void setTopCromossomes(List<Cromossome<T>> topCromossomes) {
         this.topCromossomes = topCromossomes;
         this.setBestCromossome(topCromossomes.get(0));
     }
@@ -39,19 +39,19 @@ public class GenerationStatisticsSorted extends GenerationStatistics {
     /**
      * @return the bottomCromossomes
      */
-    public List<Cromossome> getBottomCromossomes() {
+    public List<Cromossome<T>> getBottomCromossomes() {
         return bottomCromossomes;
     }
 
     /**
      * @param bottomCromossomes the bottomCromossomes to set
      */
-    public void setBottomCromossomes(List<Cromossome> bottomCromossomes) {
+    public void setBottomCromossomes(List<Cromossome<T>> bottomCromossomes) {
         this.bottomCromossomes = bottomCromossomes;
         this.setWorstCromossome(bottomCromossomes.get(bottomCromossomes.size()-1));
     }
     
-    public void setPopulationDetails(double avgFitness, List<Cromossome> best, List<Cromossome> worst) {
+    public void setPopulationDetails(double avgFitness, List<Cromossome<T>> best, List<Cromossome<T>> worst) {
         this.setAvgFitness(avgFitness);
         this.setTopCromossomes(best);
         this.setBottomCromossomes(worst);

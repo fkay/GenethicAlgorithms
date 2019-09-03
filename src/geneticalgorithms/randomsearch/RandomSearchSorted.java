@@ -12,17 +12,18 @@ import geneticalgorithms.populations.PopulationSorted;
 /**
  *
  * @author fkay1
+ * @param <T> Genes type
  */
-public class RandomSearchSorted extends RandomSearch{
+public class RandomSearchSorted<T> extends RandomSearch<T>{
     
-    public RandomSearchSorted(int size, ICromossomeFactory cromossomeFactory, int bestToSave) {
-        this.setPopulation(new PopulationSorted(size, 0,0,cromossomeFactory));
+    public RandomSearchSorted(int size, ICromossomeFactory<T> cromossomeFactory, int bestToSave) {
+        this.setPopulation(new PopulationSorted<>(size, 0,0,cromossomeFactory));
         
         getPopulation().init();
         
-        this.setStats(new GenerationStatisticsSorted(getPopulation().getSize(), 0) );
+        this.setStats(new GenerationStatisticsSorted<>(getPopulation().getSize(), 0) );
         
-        ((GenerationStatisticsSorted)this.getStats()).setPopulationDetails(getPopulation().getAvgFitness(), 
+        ((GenerationStatisticsSorted<T>)this.getStats()).setPopulationDetails(getPopulation().getAvgFitness(), 
                 getPopulation().getCromossomes().subList(0, bestToSave), 
                 getPopulation().getCromossomes().subList(getPopulation().getCromossomes().size() - bestToSave, getPopulation().getCromossomes().size()));    
         System.out.println("Melhor cromossomo usando Random search:");

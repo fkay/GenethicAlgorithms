@@ -12,6 +12,6 @@ import geneticalgorithms.cromossomes.Cromossome;
  *
  * @author Fabricio Kassardjian
  */
-public interface IMutate {
-    public Cromossome mutate(Cromossome me, double probMutate, GenerationStatistics stat);
+public interface IMutate<T> {
+    public Cromossome<T> mutate(Cromossome<T> me, double probMutate, GenerationStatistics stat);
 }

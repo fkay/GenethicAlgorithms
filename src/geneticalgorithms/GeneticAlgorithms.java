@@ -30,11 +30,11 @@ public class GeneticAlgorithms {
         final int bestToSave = 3;   // how many cromossomes to save from top an bottom
         
         final int populationSize = 30;
-        final int generations = 300;
+        final int generations = 600;
         
-        final double probMutate = 0.005;
-        final double probCrossover = 0.80;
-        final ICromossomeFactory cromoFactory = new Cromossome2Factory(Cromossome2Factory.Cromossome2Type.c);
+        final double probMutate = 0.001;
+        final double probCrossover = 0.85;
+        final ICromossomeFactory<Integer> cromoFactory = new Cromossome2Factory(Cromossome2Factory.Cromossome2Type.c);
         String filename;
 
 //        Cromossome2 cromo = new Cromossome2();
@@ -42,11 +42,11 @@ public class GeneticAlgorithms {
 //        System.out.println(cromo.toString());
 
         for (int i = 0; i < tests; i++) {
-            SimpleGA sga = new SimpleGASorted(populationSize, probMutate, probCrossover, cromoFactory, bestToSave);
+            SimpleGA<Integer> sga = new SimpleGASorted<>(populationSize, probMutate, probCrossover, cromoFactory, bestToSave);
         
             sga.execute(generations, true);
         
-            RandomSearchSorted randomSearchSorted = new RandomSearchSorted(populationSize * generations, cromoFactory, bestToSave);
+            RandomSearchSorted<Integer> randomSearchSorted = new RandomSearchSorted<>(populationSize * generations, cromoFactory, bestToSave);
             
             filename = String.format("E:\\OneDrive\\IME-BMAC\\7o Sem - 01_2019\\MAP2040 - TC\\Resultados\\summary%2d.csv", i);
             sga.statisticsToFile(filename);

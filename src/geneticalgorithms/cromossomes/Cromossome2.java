@@ -16,9 +16,11 @@ import java.util.List;
  */
 public class Cromossome2 extends Cromossome<Integer> {
     // cromossome representa uma matriz 10x10
-    private final int rows = 5, cols = 5;
+    private final int rows = 10, cols = 10;
     private int countp;
     private int countm;
+    
+    private final List<Integer> states;
     
     /**
      * @return the countp
@@ -48,7 +50,7 @@ public class Cromossome2 extends Cromossome<Integer> {
     // init random genes
     @Override 
     public void initGenes(){
-        List<Integer> genes = new ArrayList();
+        List<Integer> genes = new ArrayList<>();
         for(int i = 0; i < rows * cols; i++) {
             genes.add(Math.random() < 0.5 ? -1 : 1);
         }
@@ -112,16 +114,21 @@ public class Cromossome2 extends Cromossome<Integer> {
     }
     
     protected void initMaxGenes() {
-        List<Integer> genes = new ArrayList();
+        List<Integer> genes = new ArrayList<>();
         for(int i = 0; i < rows * cols; i++) {
             genes.add(-1);
         }
         this.setGenes(genes, true);
     }
     
-    public Cromossome2(ICrossOver crossover, IMutate mutate){
+    @Override
+    public List<Integer> getPossibleStates() {
+        return states;
+    }
+    
+    public Cromossome2(ICrossOver<Integer> crossover, IMutate<Integer> mutate){
         super(crossover, mutate);
-        super.setStates(Arrays.asList(-1,1));
+        states = Arrays.asList(-1,1);
         setMutated(false);
     }
 

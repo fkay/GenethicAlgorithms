@@ -12,13 +12,13 @@ import java.util.Locale;
  *
  * @author Fabricio
  */
-public class GenerationStatistics {
+public class GenerationStatistics<T> {
     private int nMutations;
     private int nCromMutated;
     private int nCromCrossover;
     
-    private Cromossome bestCromossome;
-    private Cromossome worstCromossome;
+    private Cromossome<T> bestCromossome;
+    private Cromossome<T> worstCromossome;
     private double avgFitness;
     private final int popSize;
     private final int generationNumber;
@@ -77,28 +77,28 @@ public class GenerationStatistics {
     /**
      * @return the bestCromossome
      */
-    public Cromossome getBestCromossome() {
+    public Cromossome<T> getBestCromossome() {
         return bestCromossome;
     }
     
     /**
      * @param bestCromossome the bestCromossome to set
      */
-    public void setBestCromossome(Cromossome bestCromossome) {
+    public void setBestCromossome(Cromossome<T> bestCromossome) {
         this.bestCromossome = bestCromossome;
     }
     
     /**
      * @return the worstCromossome
      */
-    public Cromossome getWorstCromossome() {
+    public Cromossome<T> getWorstCromossome() {
         return worstCromossome;
     }
     
     /**
      * @param worstCromossome the worstCromossome to set
      */
-    public void setWorstCromossome(Cromossome worstCromossome) {
+    public void setWorstCromossome(Cromossome<T> worstCromossome) {
         this.worstCromossome = worstCromossome;
     }
 
@@ -144,7 +144,7 @@ public class GenerationStatistics {
         return 1.0 * this.nCromCrossover / this.popSize;
     }
     
-    public void setPopulationDetails(double avgFitness, Cromossome best, Cromossome worst) {
+    public void setPopulationDetails(double avgFitness, Cromossome<T> best, Cromossome<T> worst) {
         this.setAvgFitness(avgFitness);
         this.setBestCromossome(best);
         this.setWorstCromossome(worst);

@@ -3,6 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
+/* Modelo de Ising */
+
 package geneticalgorithms.cromossomes;
 
 import geneticalgorithms.cromossomes.operators.*;
@@ -26,14 +29,16 @@ public class Cromossome1 extends Cromossome<Boolean> {
     
     private double x,y;
     
-    public Cromossome1(ICrossOver crossover, IMutate mutate) {
+    private final List<Boolean> states;
+    
+    public Cromossome1(ICrossOver<Boolean> crossover, IMutate<Boolean> mutate) {
         super(crossover, mutate);
-        super.setStates(Arrays.asList(true,false));
+        states = Arrays.asList(true,false);
     }
     
     @Override
     public void initGenes(){
-        List<Boolean> genes = new ArrayList();
+        List<Boolean> genes = new ArrayList<>();
         for(int i = 0; i < bitsX + bitsY; i++) {
             genes.add(Math.random() < 0.5 ? Boolean.TRUE : Boolean.FALSE);
         }
@@ -73,5 +78,8 @@ public class Cromossome1 extends Cromossome<Boolean> {
         System.out.println();
     }
 
-
+    @Override
+    public List<Boolean> getPossibleStates() {
+        return states;
+    }
 }
