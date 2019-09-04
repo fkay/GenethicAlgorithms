@@ -14,6 +14,7 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Locale;
+import java.util.Map;
 
 /**
  *
@@ -37,6 +38,8 @@ public class GeneticAlgorithms {
         final ICromossomeFactory cromoFactory = new Cromossome2Factory(Cromossome2Factory.Cromossome2Type.c);
         String filename;
 
+        String onedrive = System.getenv("OneDrive");
+        
 //        Cromossome2 cromo = new Cromossome2();
 //        cromo.initMaxGenes();
 //        System.out.println(cromo.toString());
@@ -48,20 +51,20 @@ public class GeneticAlgorithms {
         
             RandomSearchSorted randomSearchSorted = new RandomSearchSorted(populationSize * generations, cromoFactory, bestToSave);
             
-            filename = String.format("E:\\OneDrive\\IME-BMAC\\7o Sem - 01_2019\\MAP2040 - TC\\Resultados\\summary%2d.csv", i);
+            filename = String.format(onedrive + "\\IME-BMAC\\7o Sem - 01_2019\\MAP2040 - TC\\Resultados\\summary%2d.csv", i);
             sga.statisticsToFile(filename);
-            filename = String.format("E:\\OneDrive\\IME-BMAC\\7o Sem - 01_2019\\MAP2040 - TC\\Resultados\\summary%2d_rs.csv", i);
+            filename = String.format(onedrive + "\\IME-BMAC\\7o Sem - 01_2019\\MAP2040 - TC\\Resultados\\summary%2d_rs.csv", i);
             randomSearchSorted.statisticsToFile(filename);
         }
         
-        filename = "E:\\OneDrive\\IME-BMAC\\7o Sem - 01_2019\\MAP2040 - TC\\Resultados\\Parameters.csv";
+        filename = onedrive + "\\IME-BMAC\\7o Sem - 01_2019\\MAP2040 - TC\\Resultados\\Parameters.csv";
         try(BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
             writer.write("tamanho.populacao;geracoes;prob.cross;prob.mut;testes\n");
             writer.write(String.format(Locale.ROOT, "%d;%d;%f;%f;%d\n", 
                     populationSize, generations, probCrossover, probMutate, tests));
         }
         catch (IOException e) {
-            System.out.println("Erro ao gravar arquivo de resutlados: " + filename);
+            System.out.println("Erro ao gravar arquivo de resultados: " + filename);
             System.out.println(e.getMessage());
         }
         
