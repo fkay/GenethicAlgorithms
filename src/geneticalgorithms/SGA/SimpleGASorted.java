@@ -5,6 +5,7 @@
  */
 package geneticalgorithms.SGA;
 
+import geneticalgorithms.Statistics.GenerationStatistics;
 import geneticalgorithms.Statistics.GenerationStatisticsSorted;
 import geneticalgorithms.cromossomes.ICromossomeFactory;
 import geneticalgorithms.populations.PopulationSorted;

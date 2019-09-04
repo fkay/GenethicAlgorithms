@@ -14,11 +14,11 @@ import org.apache.commons.math3.distribution.BinomialDistribution;
  *
  * @author Fabricio Kassardjian
  */
-public class MutateState implements IMutate{
+public class MutateState<T> implements IMutate<T>{
     private static BinomialDistribution bdist;
     
     @Override
-    public Cromossome mutate(Cromossome me, double probMutate, GenerationStatistics stat) {
+    public Cromossome<T> mutate(Cromossome<T> me, double probMutate, GenerationStatistics stat) {
         if(bdist == null || bdist.getProbabilityOfSuccess() != probMutate) {
             bdist = new BinomialDistribution(me.getSize(), probMutate);
         }
@@ -29,9 +29,9 @@ public class MutateState implements IMutate{
             return me;
         }
         
-        List states = me.getPossibleStates();
+        List<T> states = me.getPossibleStates();
         
-        List genes = me.getGenes();
+        List<T> genes = me.getGenes();
         for (int i = 0; i < genesToMute; i++) {
             me.setMutated(true);
             int index = (int) (Math.random() * genes.size());

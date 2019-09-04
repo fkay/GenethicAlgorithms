@@ -13,7 +13,7 @@ import geneticalgorithms.cromossomes.ICromossomeFactory;
  * Interface for CrossOver
  * @author fkay1
  */
-public interface ICrossOver {
-    public Cromossome crossover(Cromossome me, Cromossome other, double probCrossover,
-            ICromossomeFactory cromossomeFactory, GenerationStatistics stat);
+public interface ICrossOver<T> {
+    public Cromossome<T> crossover(Cromossome<T> me, Cromossome<T> other, double probCrossover,
+            ICromossomeFactory<T> cromossomeFactory, GenerationStatistics stat);
 }

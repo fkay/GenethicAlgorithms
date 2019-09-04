@@ -14,17 +14,17 @@ import java.util.List;
  *
  * @author fkay1
  */
-public class CrossOverTwoPoints implements ICrossOver{
+public class CrossOverTwoPoints<T> implements ICrossOver<T>{
     
     public CrossOverTwoPoints() {
         System.out.println("Crossover two points");
     }
 
     @Override
-    public Cromossome crossover(Cromossome me, Cromossome other, double probCrossover, 
-            ICromossomeFactory cromossomeFactory, GenerationStatistics stat) {
-        List newGenes = new ArrayList();
-        Cromossome newCromossome = cromossomeFactory.getNewCromossome();
+    public Cromossome<T> crossover(Cromossome<T> me, Cromossome<T> other, double probCrossover, 
+            ICromossomeFactory<T> cromossomeFactory, GenerationStatistics stat) {
+        List<T> newGenes = new ArrayList<>();
+        Cromossome<T> newCromossome = cromossomeFactory.getNewCromossome();
         if(Math.random() < probCrossover) {
             stat.incnCromCrossover();
             // get crossover point

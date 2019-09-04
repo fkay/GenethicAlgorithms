@@ -35,7 +35,7 @@ public class GeneticAlgorithms {
         
         final double probMutate = 0.005;
         final double probCrossover = 0.80;
-        final ICromossomeFactory cromoFactory = new Cromossome2Factory(Cromossome2Factory.Cromossome2Type.c);
+        final ICromossomeFactory<Integer> cromoFactory = new Cromossome2Factory(Cromossome2Factory.Cromossome2Type.c);
         String filename;
 
         String onedrive = System.getenv("OneDrive");

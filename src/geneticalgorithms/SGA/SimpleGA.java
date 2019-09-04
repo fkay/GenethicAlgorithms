@@ -88,7 +88,7 @@ public class SimpleGA{
     /**
      * @return the Statisitic
      */
-    public final List getStatistics() {
+    public final List<GenerationStatistics> getStatistics() {
         return stats;
     }
     
@@ -111,12 +111,12 @@ public class SimpleGA{
             double probCrossover, ICromossomeFactory cromossomeFactory) {
         this.population = new Population(sizePopulation, probMutate, 
                 probCrossover, cromossomeFactory);
-        this.stats = new ArrayList();
+        this.stats = new ArrayList<>();
     }
     
     // for subclasse have his own constructor when needed
     protected SimpleGA() {
-        this.stats = new ArrayList();
+        this.stats = new ArrayList<>();
     }
     
     // Save summary collection to a file for reports

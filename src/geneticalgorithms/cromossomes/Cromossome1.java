@@ -28,14 +28,14 @@ public class Cromossome1 extends Cromossome<Boolean> {
     
     private final List<Boolean> states;
     
-    public Cromossome1(ICrossOver crossover, IMutate mutate) {
+    public Cromossome1(ICrossOver<Boolean> crossover, IMutate<Boolean> mutate) {
         super(crossover, mutate);
         states = Arrays.asList(true,false);
     }
     
     @Override
     public void initGenes(){
-        List<Boolean> genes = new ArrayList();
+        List<Boolean> genes = new ArrayList<>();
         for(int i = 0; i < bitsX + bitsY; i++) {
             genes.add(Math.random() < 0.5 ? Boolean.TRUE : Boolean.FALSE);
         }

@@ -50,7 +50,7 @@ public class Cromossome2 extends Cromossome<Integer> {
     // init random genes
     @Override 
     public void initGenes(){
-        List<Integer> genes = new ArrayList();
+        List<Integer> genes = new ArrayList<>();
         for(int i = 0; i < rows * cols; i++) {
             genes.add(Math.random() < 0.5 ? -1 : 1);
         }
@@ -111,7 +111,7 @@ public class Cromossome2 extends Cromossome<Integer> {
     }
     
     protected void initMaxGenes() {
-        List<Integer> genes = new ArrayList();
+        List<Integer> genes = new ArrayList<>();
         for(int i = 0; i < rows * cols; i++) {
             genes.add(-1);
         }
@@ -123,7 +123,7 @@ public class Cromossome2 extends Cromossome<Integer> {
         return states;
     }
     
-    public Cromossome2(ICrossOver crossover, IMutate mutate){
+    public Cromossome2(ICrossOver<Integer> crossover, IMutate<Integer> mutate){
         super(crossover, mutate);
         states = Arrays.asList(-1,1);
         setMutated(false);

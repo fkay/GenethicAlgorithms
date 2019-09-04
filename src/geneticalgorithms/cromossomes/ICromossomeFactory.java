@@ -11,6 +11,6 @@ import geneticalgorithms.cromossomes.Cromossome;
  *
  * @author Fabricio
  */
-public interface ICromossomeFactory {
-    public Cromossome getNewCromossome();
+public interface ICromossomeFactory<T> {
+    public Cromossome<T> getNewCromossome();
 }

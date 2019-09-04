@@ -129,7 +129,7 @@ public class Population {
 
     // init Cromossomes population with random values
     public void init() {
-        List<Cromossome> cromossomes = new ArrayList();
+        List<Cromossome> cromossomes = new ArrayList<>();
         for(int i = 0; i < this.getSize(); i++) {
             Cromossome cromossome = cromossomeFactory.getNewCromossome();
             cromossome.initGenes();
@@ -160,7 +160,7 @@ public class Population {
     
     // generate the next generation usim SGA
     public void nextGeneration(GenerationStatistics stat){
-        List<Cromossome> newGeneration = new ArrayList();
+        List<Cromossome> newGeneration = new ArrayList<>();
         for(int i=0; i <  getSize(); i++) {
             Cromossome parent1 = select();
             Cromossome parent2 = select(); 

@@ -15,17 +15,17 @@ import java.util.List;
  *
  * @author fkay1
  */
-public class CrossOverUniform implements ICrossOver{
+public class CrossOverUniform<T> implements ICrossOver<T>{
     
     public CrossOverUniform(){
         System.out.println("Crossover uniform");
     }
 
     @Override
-    public Cromossome crossover(Cromossome me, Cromossome other, double probCrossover, 
-            ICromossomeFactory cromossomeFactory, GenerationStatistics stat) {
-                List newGenes = new ArrayList();
-        Cromossome newCromossome = cromossomeFactory.getNewCromossome();
+    public Cromossome<T> crossover(Cromossome<T> me, Cromossome<T> other, double probCrossover, 
+            ICromossomeFactory<T> cromossomeFactory, GenerationStatistics stat) {
+        List<T> newGenes = new ArrayList<>();
+        Cromossome<T> newCromossome = cromossomeFactory.getNewCromossome();
         if(Math.random() < probCrossover) {
             stat.incnCromCrossover();
 

@@ -7,6 +7,7 @@ package geneticalgorithms.cromossomes;
 
 import geneticalgorithms.Statistics.GenerationStatistics;
 import geneticalgorithms.cromossomes.operators.*;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -19,10 +20,10 @@ public abstract class Cromossome<T> implements Comparable<Cromossome> {
     private double fitness;
     private boolean mutated;
     
-    private final ICrossOver crossOver;
-    private final IMutate imutate;
+    private final ICrossOver<T> crossOver;
+    private final IMutate<T> imutate;
     
-    public Cromossome(ICrossOver crossover, IMutate mutate) {
+    public Cromossome(ICrossOver<T> crossover, IMutate<T> mutate) {
         this.crossOver = crossover;
         this.imutate = mutate;
     }
@@ -81,14 +82,14 @@ public abstract class Cromossome<T> implements Comparable<Cromossome> {
     
     // Simple single point crossover with other cromossome. 
     // Return a new Cromossome from the crossover
-    protected Cromossome crossover(Cromossome other, double probCrossover,
-            ICromossomeFactory cromossomeFactory, GenerationStatistics stat){
+    protected Cromossome<T> crossover(Cromossome<T> other, double probCrossover,
+            ICromossomeFactory<T> cromossomeFactory, GenerationStatistics stat){
 
         return crossOver.crossover(this, other, probCrossover, cromossomeFactory, stat);
     }
     
     // Cromossome mutation
-    protected Cromossome mutate(double probMutate, GenerationStatistics stat) {
+    protected Cromossome<T> mutate(double probMutate, GenerationStatistics stat) {
         return imutate.mutate(this, probMutate, stat);
     }
     
@@ -98,10 +99,10 @@ public abstract class Cromossome<T> implements Comparable<Cromossome> {
      */
     public abstract List<T> getPossibleStates(); 
     
-    public Cromossome evolve(Cromossome other, double probMutate, double probCrossover,
-            ICromossomeFactory cromossomeFactory, GenerationStatistics stat) {
+    public Cromossome<T> evolve(Cromossome<T> other, double probMutate, double probCrossover,
+            ICromossomeFactory<T> cromossomeFactory, GenerationStatistics stat) {
         
-        Cromossome newCromossome = crossover(other, probCrossover, cromossomeFactory, stat);
+        Cromossome<T> newCromossome = crossover(other, probCrossover, cromossomeFactory, stat);
         
         // debug print
         /*System.out.println(String.format("Crossover point: %d", crossPoint));
