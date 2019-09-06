@@ -87,6 +87,23 @@ public class Cromossome1 extends Cromossome<Boolean> {
         });
         System.out.println();
     }
-
+    
+    @Override
+    protected String heritageMap() {
+        StringBuilder sb = new StringBuilder();
+        this.getGenesHeritage().forEach((gH) -> {
+            sb.append(gH);
+        });
+        return sb.toString();
+    }
+    
+    @Override
+    protected String mutateMap() {
+        StringBuilder sb = new StringBuilder();
+        this.getGenesMutated().forEach((gH) -> {
+            sb.append(gH);
+        });
+        return sb.toString();
+    }
 
 }

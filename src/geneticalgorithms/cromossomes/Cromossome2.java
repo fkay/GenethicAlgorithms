@@ -99,9 +99,20 @@ public class Cromossome2 extends Cromossome<Integer> {
         StringBuilder sb = new StringBuilder();
         sb.append("\n");
         List<Integer> genes = this.getGenes();
+        
+        sb.append(commomStringBuilder(genes, "%2d"));
+        
+        sb.append(String.format("\n#1: %3d | #-1: %3d\n", countp, countm));
+        
+        return sb.toString();
+    }
+    
+    private String commomStringBuilder(List genes, String format){
+        StringBuilder sb = new StringBuilder();
+        
         for(int i = 0; i < rows; i++) {
             for(int j = 0; j < cols; j++) {
-                sb.append(String.format("%2d",genes.get(cols*i + j)));
+                sb.append(String.format(format,genes.get(cols*i + j)));
                 if(j != cols - 1)
                     sb.append(" | ");
                 else
@@ -115,8 +126,20 @@ public class Cromossome2 extends Cromossome<Integer> {
             //sb.append("\n");
         }
         
-        sb.append(String.format("\n#1: %3d | #-1: %3d\n", countp, countm));
-        
+        return sb.toString();
+    }
+    
+    @Override
+    protected String heritageMap() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(commomStringBuilder(this.getGenesHeritage(),"%2d"));
+        return sb.toString();
+    }
+    
+    @Override
+    protected String mutateMap() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(commomStringBuilder(this.getGenesMutated(),"%B"));
         return sb.toString();
     }
 

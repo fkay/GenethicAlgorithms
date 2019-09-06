@@ -26,16 +26,22 @@ public class SimpleGA{
 
     private List<GenerationStatistics> stats;
     
+    protected List<String> summary;
+    
     // the best cromossome of all gnerations
     // can be lost due no elitist selection and mutation
     private Cromossome bestCromossomeAll;
     
-    public void execute(int generations, boolean quiet) {
+    public void execute(int generations, boolean quiet, boolean saveSummary) {
         if(getPopulation() == null) {
             System.out.println("Nenhuma populacao configurada");
             return;
         }
         final int step = generations / 15;
+        
+        if(saveSummary) {
+            summary = new ArrayList<>();
+        }
         
         getPopulation().init();
         if(!quiet)
@@ -56,6 +62,10 @@ public class SimpleGA{
             // append the summary for this generatios
             statistic.setPopulationDetails(population.getAvgFitness(), population.getBestCromossome(), population.getWorstCromossome());
             stats.add(statistic);
+            
+            if(saveSummary) {
+                this.summary.add(this.getPopulation().popuplationSummary());
+            }
             
             if (bestCromossomeAll.getFitness() < getPopulation().getBestCromossome().getFitness()) {
                 bestCromossomeAll = getPopulation().getBestCromossome();
@@ -119,6 +129,7 @@ public class SimpleGA{
         this.stats = new ArrayList();
     }
     
+    
     // Save summary collection to a file for reports
     public final void statisticsToFile(String filename) {
         try(BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
@@ -129,6 +140,18 @@ public class SimpleGA{
         }
         catch (IOException e) {
             System.out.println("Erro ao gravar arquivo de resutlados: " + filename);
+            System.out.println(e.getMessage());
+        }
+    }
+    
+    public final void summaryToFile(String filename) {
+        try(BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
+            for (String summ : summary) {
+                writer.write(summ);
+            }
+        }
+        catch (IOException e) {
+            System.out.println("Erro ao gravar arquivo de resumo: " + filename);
             System.out.println(e.getMessage());
         }
     }

@@ -19,6 +19,14 @@ public abstract class Cromossome<T> implements Comparable<Cromossome> {
     private double fitness;
     private boolean mutated;
     
+    private Cromossome parent1;
+    private Cromossome parent2;
+    
+    private List<Integer> genesHeritage;
+    private List<Boolean> genesMutated;
+    
+    private int selected = 0;
+    
     protected final ICrossOver icrossover;
     protected final IMutate imutate;
     
@@ -122,6 +130,9 @@ public abstract class Cromossome<T> implements Comparable<Cromossome> {
         
         newCromossome = newCromossome.mutate(probMutate, stat);
         
+        newCromossome.setParent1(this);
+        newCromossome.setParent2(other);
+        
         // debug print
         /*System.out.print("Son muta: ");
         newCromossome.printGenes();
@@ -143,13 +154,79 @@ public abstract class Cromossome<T> implements Comparable<Cromossome> {
     // return the fenotype from this cromossome (what its look like)
     protected abstract String fenotype();
     
+    // return the heritage map
+    protected abstract String heritageMap();
+    
+    // return the mutated map
+    protected abstract String mutateMap();
+    
     // print the genes
     protected abstract void printGenes();
+    
+    public void setParent1(Cromossome parent1) {
+        this.parent1 = parent1;
+    }
+    
+    public Cromossome getParent1() {
+        return this.parent1;
+    }
+    
+    public void setParent2(Cromossome parent2) {
+        this.parent2 = parent2;
+    }
+    
+    public Cromossome getParent2() {
+        return this.parent2;
+    }
+    
+    public void setGenesHeritage(List<Integer> genesH) {
+        this.genesHeritage = genesH;
+    }
+    
+    public List<Integer> getGenesHeritage() {
+        return this.genesHeritage;
+    }
+    
+    public void setGenesMutated(List<Boolean> genesM) {
+        this.genesMutated = genesM;
+    }
+    
+    public List<Boolean> getGenesMutated() {
+        return this.genesMutated;
+    }
+    
+    public void incSelected() {
+        this.selected++;
+    }
+    
+    public int getSelected() {
+        return this.selected;
+    }
     
     @Override
     public String toString() {
         return String.format("Fenotipo: " + fenotype() + "\n"
                 + "Avaliação: %f\n", this.fitness);
+    }
+    
+    public String cromossomeSummary(int popSize) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("#### CHILD #####\n");
+        sb.append(this.toString());
+        sb.append(String.format("Selecionado %d vezes, %.2f", this.selected, (1.0 * this.selected) / popSize));
+        
+        sb.append("#### PARENT 1 #####\n");
+        sb.append(this.parent1.toString());
+        sb.append("#### PARENT 2 #####\n");
+        sb.append(this.parent2.toString());
+        
+        sb.append("### HERITAGE MAP ###");
+        sb.append(this.heritageMap());
+        
+        sb.append("### MUTATE MAP");
+        sb.append(this.mutateMap());
+                
+        return sb.toString();
     }
    
     @Override

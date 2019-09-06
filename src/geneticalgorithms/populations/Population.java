@@ -155,7 +155,9 @@ public class Population {
     // method for cromossome selection
     // default selects using simple Roullete
     protected Cromossome select(){
-        return this.selectRoullete();
+        Cromossome selectedCrom = this.selectRoullete();
+        selectedCrom.incSelected();
+        return selectedCrom;
     }
     
     // generate the next generation usim SGA
@@ -163,7 +165,7 @@ public class Population {
         List<Cromossome> newGeneration = new ArrayList();
         for(int i=0; i <  getSize(); i++) {
             Cromossome parent1 = select();
-            Cromossome parent2 = select(); 
+            Cromossome parent2 = select();
             Cromossome son = parent1.evolve(parent2, getProbMutate(), 
                     getProbCrossover(), stat);
             
@@ -213,6 +215,18 @@ public class Population {
         this.setSize(size);
         this.cromossomeFactory = cromossomeFactory;
         generationNum = 0;
+    }
+    
+    public String popuplationSummary() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(String.format("Geração: %d | Média Avaliação: %f\n", this.getGenerationNum(), this.getAvgFitness()));
+        
+        for(Cromossome cromo : this.cromossomes) {
+            String s = cromo.cromossomeSummary(size);
+            sb.append(s);
+        };
+        
+        return sb.toString();
     }
     
     // return instance string

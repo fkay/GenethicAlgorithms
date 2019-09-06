@@ -7,7 +7,6 @@ package geneticalgorithms.cromossomes.operators;
 
 import geneticalgorithms.Statistics.GenerationStatistics;
 import geneticalgorithms.cromossomes.Cromossome;
-import geneticalgorithms.cromossomes.ICromossomeFactory;
 
 /**
  * Interface for CrossOver

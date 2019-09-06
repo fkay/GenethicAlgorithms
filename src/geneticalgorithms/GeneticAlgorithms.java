@@ -37,6 +37,7 @@ public class GeneticAlgorithms {
         final ICromossomeFactory cromoFactory = new Cromossome2Factory(Cromossome2Factory.Cromossome2Type.c);
         String filename;
 
+        
 //        Cromossome2 cromo = new Cromossome2();
 //        cromo.initMaxGenes();
 //        System.out.println(cromo.toString());
@@ -44,8 +45,13 @@ public class GeneticAlgorithms {
         for (int i = 0; i < tests; i++) {
             SimpleGA sga = new SimpleGASorted(populationSize, probMutate, probCrossover, cromoFactory, bestToSave);
         
-            sga.execute(generations, true);
+            sga.execute(generations, true, i == 0);
         
+            if(i == 0){
+                filename = String.format("E:\\OneDrive\\IME-BMAC\\7o Sem - 01_2019\\MAP2040 - TC\\Resultados\\resumo%2d.csv", i);
+                sga.summaryToFile(filename);
+            }
+            
             RandomSearchSorted randomSearchSorted = new RandomSearchSorted(populationSize * generations, cromoFactory, bestToSave);
             
             filename = String.format("E:\\OneDrive\\IME-BMAC\\7o Sem - 01_2019\\MAP2040 - TC\\Resultados\\summary%2d.csv", i);

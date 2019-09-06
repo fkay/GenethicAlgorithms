@@ -8,6 +8,7 @@ package geneticalgorithms.SGA;
 import geneticalgorithms.Statistics.GenerationStatisticsSorted;
 import geneticalgorithms.cromossomes.ICromossomeFactory;
 import geneticalgorithms.populations.PopulationSorted;
+import java.util.ArrayList;
 
 
 /**
@@ -18,12 +19,16 @@ public class SimpleGASorted extends SimpleGA {
     final int bestToSave;
     
     @Override
-    public void execute(int generations, boolean quiet) {
+    public void execute(int generations, boolean quiet, boolean saveSummary) {
         if(getPopulation() == null) {
             System.out.println("Nenhuma popuplacao configurada");
             return;
         }
         final int step = generations / 15;
+        
+        if(saveSummary){
+            this.summary = new ArrayList<>();
+        }
         
         getPopulation().init();
         if(!quiet)
@@ -47,6 +52,11 @@ public class SimpleGASorted extends SimpleGA {
                 getPopulation().getCromossomes().subList(getPopulation().getCromossomes().size() - bestToSave, getPopulation().getCromossomes().size()));
             // append the summary for this generatios
             this.getStatistics().add(statistic);
+            
+            if(saveSummary) {
+                String s = this.getPopulation().popuplationSummary();
+                this.summary.add(s);
+            }
             
             if (this.getBestCromossomeAll().getFitness() < getPopulation().getBestCromossome().getFitness()) {
                 this.setBestCromossomeAll(getPopulation().getBestCromossome());

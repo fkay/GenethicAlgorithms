@@ -7,7 +7,9 @@ package geneticalgorithms.cromossomes.operators;
 
 import geneticalgorithms.Statistics.GenerationStatistics;
 import geneticalgorithms.cromossomes.Cromossome;
+import java.util.Collections;
 import java.util.List;
+import java.util.ArrayList;
 import org.apache.commons.math3.distribution.BinomialDistribution;
 
 /**
@@ -23,9 +25,13 @@ public class MutateState implements IMutate{
             bdist = new BinomialDistribution(me.getSize(), probMutate);
         }
         int genesToMute = bdist.sample();
+        
+        List<Boolean> genesM = new ArrayList<>(Collections.nCopies(me.getSize(), false));
 
         if(genesToMute == 0) {
             me.setGenes(me.getGenes(), true);
+            me.setGenesMutated(genesM);
+            
             return me;
         }
         
@@ -37,6 +43,7 @@ public class MutateState implements IMutate{
             int index = (int) (Math.random() * genes.size());
             int choice = (int) (Math.random() * states.size());
             genes.set(index, states.get(choice));
+            genesM.set(index, Boolean.TRUE);
             stat.incnMutations();
         }
         
@@ -44,6 +51,7 @@ public class MutateState implements IMutate{
             stat.incnCromMutated();
         // by setting the genes we force recalculate fitness
         me.setGenes(genes, true);
+        me.setGenesMutated(genesM);
         
         return me;
     }
