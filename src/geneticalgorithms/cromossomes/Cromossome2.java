@@ -22,6 +22,21 @@ public class Cromossome2 extends Cromossome<Integer> {
     
     private final List<Integer> states;
     
+     public Cromossome2(ICrossOver crossover, IMutate mutate){
+        super(crossover, mutate);
+        states = Arrays.asList(-1,1);
+        setMutated(false);
+    }
+     
+    public Cromossome2(Cromossome2 cromo) {
+        this(cromo.icrossover, cromo.imutate);
+    }
+    
+    @Override
+    public Cromossome2 getCopy() {
+        return new Cromossome2(this);
+    }
+    
     /**
      * @return the countp
      */
@@ -126,10 +141,6 @@ public class Cromossome2 extends Cromossome<Integer> {
         return states;
     }
     
-    public Cromossome2(ICrossOver crossover, IMutate mutate){
-        super(crossover, mutate);
-        states = Arrays.asList(-1,1);
-        setMutated(false);
-    }
+   
 
 }

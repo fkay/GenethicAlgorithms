@@ -22,9 +22,9 @@ public class CrossOverTwoPoints implements ICrossOver{
 
     @Override
     public Cromossome crossover(Cromossome me, Cromossome other, double probCrossover, 
-            ICromossomeFactory cromossomeFactory, GenerationStatistics stat) {
+            GenerationStatistics stat) {
         List newGenes = new ArrayList();
-        Cromossome newCromossome = cromossomeFactory.getNewCromossome();
+        Cromossome newCromossome = me.getNewCromossome();
         if(Math.random() < probCrossover) {
             stat.incnCromCrossover();
             // get crossover point

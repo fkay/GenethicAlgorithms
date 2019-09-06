@@ -19,12 +19,18 @@ public abstract class Cromossome<T> implements Comparable<Cromossome> {
     private double fitness;
     private boolean mutated;
     
-    private final ICrossOver crossOver;
-    private final IMutate imutate;
+    protected final ICrossOver icrossover;
+    protected final IMutate imutate;
+    
+    public abstract Cromossome getCopy();
     
     public Cromossome(ICrossOver crossover, IMutate mutate) {
-        this.crossOver = crossover;
+        this.icrossover = crossover;
         this.imutate = mutate;
+    }
+    
+    public Cromossome(Cromossome other) {
+        this(other.icrossover, other.imutate);
     }
 
     /**
@@ -36,6 +42,7 @@ public abstract class Cromossome<T> implements Comparable<Cromossome> {
 
     /**
      * @param genes the genes to set
+     * @param calcFit true if already calc the fitness
      */
     public void setGenes(List<T> genes, boolean calcFit) {
         this.genes = genes;
@@ -82,9 +89,9 @@ public abstract class Cromossome<T> implements Comparable<Cromossome> {
     // Simple single point crossover with other cromossome. 
     // Return a new Cromossome from the crossover
     protected Cromossome crossover(Cromossome other, double probCrossover,
-            ICromossomeFactory cromossomeFactory, GenerationStatistics stat){
+            GenerationStatistics stat){
 
-        return crossOver.crossover(this, other, probCrossover, cromossomeFactory, stat);
+        return icrossover.crossover(this, other, probCrossover, stat);
     }
     
     // Cromossome mutation
@@ -99,9 +106,9 @@ public abstract class Cromossome<T> implements Comparable<Cromossome> {
     public abstract List<T> getPossibleStates(); 
     
     public Cromossome evolve(Cromossome other, double probMutate, double probCrossover,
-            ICromossomeFactory cromossomeFactory, GenerationStatistics stat) {
+            GenerationStatistics stat) {
         
-        Cromossome newCromossome = crossover(other, probCrossover, cromossomeFactory, stat);
+        Cromossome newCromossome = crossover(other, probCrossover, stat);
         
         // debug print
         /*System.out.println(String.format("Crossover point: %d", crossPoint));
@@ -121,6 +128,10 @@ public abstract class Cromossome<T> implements Comparable<Cromossome> {
         */
         
         return newCromossome;
+    }
+    
+    public Cromossome getNewCromossome() {
+        return this.getCopy();
     }
 
     // Calc cromossome fitness

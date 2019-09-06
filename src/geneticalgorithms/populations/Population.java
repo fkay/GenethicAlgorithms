@@ -129,13 +129,13 @@ public class Population {
 
     // init Cromossomes population with random values
     public void init() {
-        List<Cromossome> cromossomes = new ArrayList();
+        List<Cromossome> cromos = new ArrayList();
         for(int i = 0; i < this.getSize(); i++) {
             Cromossome cromossome = cromossomeFactory.getNewCromossome();
             cromossome.initGenes();
-            cromossomes.add(cromossome);
+            cromos.add(cromossome);
         }
-        this.setCromossomes(cromossomes);
+        this.setCromossomes(cromos);
     }
     
     // select cromossome using simple roullete
@@ -165,7 +165,7 @@ public class Population {
             Cromossome parent1 = select();
             Cromossome parent2 = select(); 
             Cromossome son = parent1.evolve(parent2, getProbMutate(), 
-                    getProbCrossover(), cromossomeFactory, stat);
+                    getProbCrossover(), stat);
             
             newGeneration.add(son);
         }

@@ -7,7 +7,6 @@ package geneticalgorithms.cromossomes.operators;
 
 import geneticalgorithms.Statistics.GenerationStatistics;
 import geneticalgorithms.cromossomes.Cromossome;
-import geneticalgorithms.cromossomes.ICromossomeFactory;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,9 +22,9 @@ public class CrossOverSinglePoint implements ICrossOver{
 
     @Override
     public Cromossome crossover(Cromossome me, Cromossome other, double probCrossover, 
-            ICromossomeFactory cromossomeFactory, GenerationStatistics stat) {
+            GenerationStatistics stat) {
         List newGenes = new ArrayList();
-        Cromossome newCromossome = cromossomeFactory.getNewCromossome();
+        Cromossome newCromossome = me.getNewCromossome();
         if(Math.random() < probCrossover) {
             stat.incnCromCrossover();
             // get crossover point

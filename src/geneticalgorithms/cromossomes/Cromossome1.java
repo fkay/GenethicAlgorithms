@@ -33,6 +33,15 @@ public class Cromossome1 extends Cromossome<Boolean> {
         states = Arrays.asList(true,false);
     }
     
+    public Cromossome1(Cromossome1 cromo) {
+        this(cromo.icrossover, cromo.imutate);
+    }
+    
+    @Override
+    public Cromossome1 getCopy() {
+        return new Cromossome1(this);
+    }
+    
     @Override
     public void initGenes(){
         List<Boolean> genes = new ArrayList();
