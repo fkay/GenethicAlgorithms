@@ -15,5 +15,5 @@ import geneticalgorithms.cromossomes.ICromossomeFactory;
  */
 public interface ICrossOver<T> {
     public Cromossome<T> crossover(Cromossome<T> me, Cromossome<T> other, double probCrossover,
-            ICromossomeFactory<T> cromossomeFactory, GenerationStatistics stat);
+            ICromossomeFactory<Cromossome<T>> cromossomeFactory, GenerationStatistics stat);
 }

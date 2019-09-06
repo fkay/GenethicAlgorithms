@@ -15,10 +15,10 @@ import java.util.List;
  *
  * @author Fabricio
  */
-public class Population {
-    private List<Cromossome> cromossomes;
-    private Cromossome bestCromossome;
-    private Cromossome worstCromossome;
+public class Population <T extends Cromossome>{
+    private List<T> cromossomes;
+    private T bestCromossome;
+    private T worstCromossome;
     private double sumFitness = 0;
     
     private int generationNum;
@@ -27,19 +27,19 @@ public class Population {
     private double probMutate;
     private int size;
     
-    private final ICromossomeFactory cromossomeFactory;
+    private final ICromossomeFactory<T> cromossomeFactory;
     
     /**
      * @return the cromossomes
      */
-    public List<Cromossome> getCromossomes() {
+    public List<T> getCromossomes() {
         return cromossomes;
     }
 
     /**
      * @param cromossomes the cromossomes to set
      */
-    public final void setCromossomes(List<Cromossome> cromossomes) {
+    public final void setCromossomes(List<T> cromossomes) {
         this.cromossomes = cromossomes;
         // Calc fitness sum
         this.sumFitness();
@@ -50,14 +50,14 @@ public class Population {
     /**
      * @return the bestCromossome
      */
-    public Cromossome getBestCromossome() {
+    public T getBestCromossome() {
         return bestCromossome;
     }
     
     /**
      * @return the worstCromossome
      */
-    public Cromossome getWorstCromossome() {
+    public T getWorstCromossome() {
         return worstCromossome;
     }
 
@@ -129,18 +129,18 @@ public class Population {
 
     // init Cromossomes population with random values
     public void init() {
-        List<Cromossome> cromossomes = new ArrayList<>();
+        List<T> cromos = new ArrayList<>();
         for(int i = 0; i < this.getSize(); i++) {
-            Cromossome cromossome = cromossomeFactory.getNewCromossome();
+            T cromossome = cromossomeFactory.getNewCromossome();
             cromossome.initGenes();
-            cromossomes.add(cromossome);
+            cromos.add(cromossome);
         }
-        this.setCromossomes(cromossomes);
+        this.setCromossomes(cromos);
     }
     
     // select cromossome using simple roullete
-    protected Cromossome selectRoullete() {
-        Cromossome cromossome = null;
+    protected T selectRoullete() {
+        T cromossome = null;
         double soma = 0;
         double roullete = Math.random() * this.getSumFitness();
         for(int i = 0; i < this.getSize(); i++) {
@@ -154,17 +154,17 @@ public class Population {
     
     // method for cromossome selection
     // default selects using simple Roullete
-    protected Cromossome select(){
+    protected T select(){
         return this.selectRoullete();
     }
     
     // generate the next generation usim SGA
     public void nextGeneration(GenerationStatistics stat){
-        List<Cromossome> newGeneration = new ArrayList<>();
+        List<T> newGeneration = new ArrayList<>();
         for(int i=0; i <  getSize(); i++) {
-            Cromossome parent1 = select();
-            Cromossome parent2 = select(); 
-            Cromossome son = parent1.evolve(parent2, getProbMutate(), 
+            Cromossome<?> parent1 = select();
+            Cromossome<?> parent2 = select(); 
+            T son = parent1.evolve(parent2, getProbMutate(), 
                     getProbCrossover(), cromossomeFactory, stat);
             
             newGeneration.add(son);
@@ -183,7 +183,7 @@ public class Population {
     // return the count of mutated cromossomes
     public int countMutated() {
         int mut = 0;
-        for(Cromossome c :getCromossomes()) {
+        for(T c :getCromossomes()) {
             if(c.getMutated())
                 mut++;
         }
@@ -192,10 +192,10 @@ public class Population {
     
     // set the best cromossome form the population
     protected void classifyFitness() {
-        Cromossome best = getCromossomes().get(0);
-        Cromossome worst = best;
+        T best = getCromossomes().get(0);
+        T worst = best;
         
-        for(Cromossome cromossome: getCromossomes()) {
+        for(T cromossome: getCromossomes()) {
             if(best.getFitness() < cromossome.getFitness())
                 best = cromossome;
             if(worst.getFitness() > cromossome.getFitness())
@@ -207,7 +207,7 @@ public class Population {
     }
     
     // Instance object with popupaltion size and probability to mutate
-    public Population(int size, double probMutate, double probCrossover, ICromossomeFactory cromossomeFactory) {
+    public Population(int size, double probMutate, double probCrossover, ICromossomeFactory<T> cromossomeFactory) {
         this.setProbMutate(probMutate);
         this.setProbCrossover(probCrossover);
         this.setSize(size);

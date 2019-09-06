@@ -7,7 +7,6 @@ package geneticalgorithms.cromossomes;
 
 import geneticalgorithms.Statistics.GenerationStatistics;
 import geneticalgorithms.cromossomes.operators.*;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -83,7 +82,7 @@ public abstract class Cromossome<T> implements Comparable<Cromossome> {
     // Simple single point crossover with other cromossome. 
     // Return a new Cromossome from the crossover
     protected Cromossome<T> crossover(Cromossome<T> other, double probCrossover,
-            ICromossomeFactory<T> cromossomeFactory, GenerationStatistics stat){
+            ICromossomeFactory<Cromossome<T>> cromossomeFactory, GenerationStatistics stat){
 
         return crossOver.crossover(this, other, probCrossover, cromossomeFactory, stat);
     }
@@ -100,7 +99,7 @@ public abstract class Cromossome<T> implements Comparable<Cromossome> {
     public abstract List<T> getPossibleStates(); 
     
     public Cromossome<T> evolve(Cromossome<T> other, double probMutate, double probCrossover,
-            ICromossomeFactory<T> cromossomeFactory, GenerationStatistics stat) {
+            ICromossomeFactory<Cromossome<T>> cromossomeFactory, GenerationStatistics stat) {
         
         Cromossome<T> newCromossome = crossover(other, probCrossover, cromossomeFactory, stat);
         

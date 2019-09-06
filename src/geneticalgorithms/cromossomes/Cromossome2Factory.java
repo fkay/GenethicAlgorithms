@@ -11,7 +11,7 @@ import geneticalgorithms.cromossomes.operators.*;
  *
  * @author Fabricio
  */
-public class Cromossome2Factory implements ICromossomeFactory<Integer>{
+public class Cromossome2Factory implements ICromossomeFactory<Cromossome2>{
     private Cromossome2Type type;
     private ICrossOver<Integer> cross;
     private IMutate<Integer> mute;

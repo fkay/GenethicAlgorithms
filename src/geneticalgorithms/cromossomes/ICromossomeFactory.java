@@ -5,12 +5,15 @@
  */
 package geneticalgorithms.cromossomes;
 
-import geneticalgorithms.cromossomes.Cromossome;
-
 /**
  *
  * @author Fabricio
  */
-public interface ICromossomeFactory<T> {
-    public Cromossome<T> getNewCromossome();
+public interface ICromossomeFactory<T extends Cromossome> {
+
+    /**
+     *
+     * @return A new Cromossome object
+     */
+    public T getNewCromossome();
 }

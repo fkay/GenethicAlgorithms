@@ -8,13 +8,11 @@ package geneticalgorithms;
 import geneticalgorithms.SGA.SimpleGASorted;
 import geneticalgorithms.SGA.SimpleGA;
 import geneticalgorithms.randomsearch.RandomSearchSorted;
-import geneticalgorithms.cromossomes.ICromossomeFactory;
-import geneticalgorithms.cromossomes.Cromossome2Factory;
+import geneticalgorithms.cromossomes.*;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Locale;
-import java.util.Map;
 
 /**
  *
@@ -35,7 +33,7 @@ public class GeneticAlgorithms {
         
         final double probMutate = 0.005;
         final double probCrossover = 0.80;
-        final ICromossomeFactory<Integer> cromoFactory = new Cromossome2Factory(Cromossome2Factory.Cromossome2Type.c);
+        final ICromossomeFactory<Cromossome2> cromoFactory = new Cromossome2Factory(Cromossome2Factory.Cromossome2Type.c);
         String filename;
 
         String onedrive = System.getenv("OneDrive");
