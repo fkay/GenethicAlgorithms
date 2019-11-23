@@ -6,7 +6,6 @@
 package geneticalgorithms.Statistics;
 
 import geneticalgorithms.cromossomes.Cromossome;
-import java.util.Locale;
 
 /**
  * Class to store informations for each of the generations
@@ -37,7 +36,7 @@ public class GenerationSummary {
     
     public String summaryLine() {
         // Locale.ROOT to use '.' as decimal separator
-        return String.format(Locale.ROOT, "%f;%f\n", this.getBest(), this.getAvg());
+        return String.format("%f;%f\n", this.getBest(), this.getAvg());
     }
     public String summaryHeader() {
         return String.format("Melhor;Media\n");

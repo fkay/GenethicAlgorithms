@@ -92,6 +92,15 @@ public class Cromossome2 extends Cromossome<Integer> {
         // sum the max negative to avoid negative values on fitness
         return sum + maxNegative;
     }
+    
+    /**
+     * Calculate total energy from the grid
+     * @return E from grid
+     */
+    public int getEnergy() {
+        // return fitness value puting back negative values
+        return (int) this.getFitness() - (2 * rows * cols - rows - cols);
+    }
 
     // retrun string representing the fenotype of the cromossome
     @Override

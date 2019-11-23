@@ -15,6 +15,7 @@ import java.util.List;
  * @param <T>
  */
 public abstract class Cromossome<T> implements Comparable<Cromossome> {
+    private int id;
     private List<T> genes;
     private double fitness;
     private boolean mutated;
@@ -41,6 +42,14 @@ public abstract class Cromossome<T> implements Comparable<Cromossome> {
         this(other.icrossover, other.imutate);
     }
 
+    public int getId() {
+        return this.id;
+    }
+    
+    public void setId(int id) {
+        this.id = id;
+    }
+    
     /**
      * @return the genes
      */
@@ -205,26 +214,29 @@ public abstract class Cromossome<T> implements Comparable<Cromossome> {
     
     @Override
     public String toString() {
-        return String.format("Fenotipo: " + fenotype() + "\n"
-                + "Avaliação: %f\n", this.fitness);
+        return String.format("ID: %d\nFenotipo: " + fenotype() + "\n"
+                + "Avaliação: %f\n", this.id, this.fitness);
     }
     
     public String cromossomeSummary(int popSize) {
         StringBuilder sb = new StringBuilder();
         sb.append("#### CHILD #####\n");
         sb.append(this.toString());
-        sb.append(String.format("Selecionado %d vezes, %.2f", this.selected, (1.0 * this.selected) / popSize));
         
         sb.append("#### PARENT 1 #####\n");
         sb.append(this.parent1.toString());
+        sb.append(String.format("Selecionado %d vezes, %.2f\n\n", this.parent1.selected, (1.0 * this.parent1.selected) / popSize));
         sb.append("#### PARENT 2 #####\n");
         sb.append(this.parent2.toString());
+        sb.append(String.format("Selecionado %d vezes, %.2f\n\n", this.parent2.selected, (1.0 * this.parent2.selected) / popSize));
         
-        sb.append("### HERITAGE MAP ###");
+        sb.append("### HERITAGE MAP ###\n");
         sb.append(this.heritageMap());
+        sb.append("\n");
         
-        sb.append("### MUTATE MAP");
+        sb.append("### MUTATE MAP\n");
         sb.append(this.mutateMap());
+        sb.append("\n");
                 
         return sb.toString();
     }

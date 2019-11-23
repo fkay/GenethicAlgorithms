@@ -6,7 +6,6 @@
 package geneticalgorithms.Statistics;
 
 import geneticalgorithms.cromossomes.Cromossome;
-import java.util.Locale;
 
 /**
  *
@@ -152,7 +151,7 @@ public class GenerationStatistics {
     
      public String summaryLine() {
         // Locale.ROOT to use '.' as decimal separator
-        return String.format(Locale.ROOT, "%d; %f; %f; %f; %f; %f\n",
+        return String.format("%d; %f; %f; %f; %f; %f\n",
                 this.generationNumber,
                 this.getBestCromossome().getFitness(), this.getWorstCromossome().getFitness(), 
                 this.getAvgFitness(), this.getCrossoverCromossomeTx(),

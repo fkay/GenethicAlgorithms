@@ -63,12 +63,12 @@ public class GenerationStatisticsSorted extends GenerationStatistics {
         StringBuilder sb = new StringBuilder();
         sb.append(String.format("%d;", this.getGenerationNumber()));
         for (int i = 0; i < topCromossomes.size(); i++) {
-            sb.append(String.format(Locale.ROOT,"%f;",this.getTopCromossomes().get(i).getFitness()));
+            sb.append(String.format("%f;",this.getTopCromossomes().get(i).getFitness()));
         }
         for (int i = 0; i < bottomCromossomes.size(); i++) {
-            sb.append(String.format(Locale.ROOT,"%f;",this.getBottomCromossomes().get(i).getFitness()));
+            sb.append(String.format("%f;",this.getBottomCromossomes().get(i).getFitness()));
         }
-        sb.append(String.format(Locale.ROOT, "%f; %f; %f\n", this.getAvgFitness(), 
+        sb.append(String.format("%f; %f; %f\n", this.getAvgFitness(), 
                 this.getCrossoverCromossomeTx(),
                 this.getMutatedCromossomeTx()) );
         return  sb.toString();
@@ -78,10 +78,10 @@ public class GenerationStatisticsSorted extends GenerationStatistics {
         StringBuilder sb = new StringBuilder();
         sb.append("Geracao;");
         for (int i = 0; i < topCromossomes.size(); i++) {
-            sb.append(String.format(Locale.ROOT,"Melhor%d;",i + 1));
+            sb.append(String.format("Melhor%d;",i + 1));
         }
         for (int i = 0; i < bottomCromossomes.size(); i++) {
-            sb.append(String.format(Locale.ROOT,"Pior%d;", i + 1));
+            sb.append(String.format("Pior%d;", i + 1));
         }
         sb.append("Media;Tx Crossover;Tx Mutacao\n");
         return sb.toString();

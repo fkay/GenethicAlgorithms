@@ -5,11 +5,9 @@
  */
 package geneticalgorithms;
 
-import geneticalgorithms.SGA.SimpleGASorted;
-import geneticalgorithms.SGA.SimpleGA;
-import geneticalgorithms.randomsearch.RandomSearchSorted;
-import geneticalgorithms.cromossomes.ICromossomeFactory;
-import geneticalgorithms.cromossomes.Cromossome2Factory;
+import geneticalgorithms.SGA.*;
+import geneticalgorithms.randomsearch.*;
+import geneticalgorithms.cromossomes.*;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -25,45 +23,75 @@ public class GeneticAlgorithms {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        final int tests = 5;
+        final int tests = 1000;
         
         final int bestToSave = 3;   // how many cromossomes to save from top an bottom
         
-        final int populationSize = 30;
-        final int generations = 300;
+        final int populationSize = 50;
+        final int generations = 100;
         
-        final double probMutate = 0.005;
+        final boolean saveFirstTesteResumes = false;
+        final boolean saveAllStatistics = false;
+        
+        final double probMutate = 0.05;
         final double probCrossover = 0.80;
-        final ICromossomeFactory cromoFactory = new Cromossome2Factory(Cromossome2Factory.Cromossome2Type.c);
+        //final ICromossomeFactory cromoFactory = new Cromossome2Factory(Cromossome2Factory.Cromossome2Type.c);
+        final ICromossomeFactory cromoFactory = new Cromossome1Factory();
         String filename;
-
+        String baseFilename = "D:\\OneDrive\\IME-BMAC\\7o Sem - 01_2019\\MAP2040 - TC\\Resultados\\";
+        String file_pre = "C1";
         
-//        Cromossome2 cromo = new Cromossome2();
-//        cromo.initMaxGenes();
-//        System.out.println(cromo.toString());
+        //Locale.setDefault(new Locale("pt", "BR"));
+        Locale.setDefault(Locale.ROOT);
 
+        String resultadoCompFileName = baseFilename + String.format("Comparativo_%s.csv", file_pre);
+        String distGAFilename = baseFilename + String.format("GA_%s_", file_pre);    // execução do GA completa com geracao e .csv
+        String distRandomFilename = baseFilename + String.format("Random_%s.csv", file_pre); // se usar nulos, nao salva
+        
         for (int i = 0; i < tests; i++) {
-            SimpleGA sga = new SimpleGASorted(populationSize, probMutate, probCrossover, cromoFactory, bestToSave);
+            //SimpleGA sga = new SimpleGASorted(populationSize, probMutate, probCrossover, cromoFactory, bestToSave);
+            SimpleGA sga = new SimpleGA(populationSize, probMutate, probCrossover, cromoFactory);
+            
+            boolean saveResumes = (i == 0) && saveFirstTesteResumes;
+            sga.execute(generations, true, saveResumes, distGAFilename);
         
-            sga.execute(generations, true, i == 0);
-        
-            if(i == 0){
-                filename = String.format("E:\\OneDrive\\IME-BMAC\\7o Sem - 01_2019\\MAP2040 - TC\\Resultados\\resumo%2d.csv", i);
+            if(saveResumes){
+                filename = baseFilename + String.format("resumo_%s_%2d.txt", file_pre, i);
                 sga.summaryToFile(filename);
+                filename = baseFilename + String.format("resumo2_%s_%2d.txt", file_pre, i);
+                sga.summaryResumeToFile(filename);
             }
             
-            RandomSearchSorted randomSearchSorted = new RandomSearchSorted(populationSize * generations, cromoFactory, bestToSave);
+            RandomSearch randomSearch = new RandomSearch(populationSize * generations, cromoFactory, distRandomFilename);
+            //RandomSearchSorted randomSearchSorted = new RandomSearchSorted(populationSize * generations, cromoFactory, bestToSave);
             
-            filename = String.format("E:\\OneDrive\\IME-BMAC\\7o Sem - 01_2019\\MAP2040 - TC\\Resultados\\summary%2d.csv", i);
-            sga.statisticsToFile(filename);
-            filename = String.format("E:\\OneDrive\\IME-BMAC\\7o Sem - 01_2019\\MAP2040 - TC\\Resultados\\summary%2d_rs.csv", i);
-            randomSearchSorted.statisticsToFile(filename);
+            if(saveAllStatistics) {
+                filename = baseFilename + String.format("summary_%s_%2d.csv", file_pre, i);
+                sga.statisticsToFile(filename);
+                filename = baseFilename + String.format("summary_%s_%2d_rs.csv", file_pre, i);
+                //randomSearchSorted.statisticsToFile(filename);
+                randomSearch.statisticsToFile(filename);
+            }
+            
+            // só salva a distribuição das gerações no primeiro
+            distRandomFilename = null;
+            distGAFilename = null;
+            
+            try(BufferedWriter writer = new BufferedWriter(new FileWriter(resultadoCompFileName, i != 0 ))) {
+                if(i == 0) writer.write("Teste; Melhor GA; Melhor RANDOM \n");
+                writer.write(String.format("%d;%f;%f\n", 
+                        i, sga.getBestCromossomeAll().getFitness(), randomSearch.getPopulation().getBestCromossome().getFitness()));
+            }
+            catch (IOException e) {
+                System.out.println("Erro ao gravar arquivo de resutlados: " + resultadoCompFileName);
+                System.out.println(e.getMessage());
+            }
         }
         
-        filename = "E:\\OneDrive\\IME-BMAC\\7o Sem - 01_2019\\MAP2040 - TC\\Resultados\\Parameters.csv";
+        filename = "D:\\OneDrive\\IME-BMAC\\7o Sem - 01_2019\\MAP2040 - TC\\Resultados\\Parameters_" + file_pre + ".csv";
         try(BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
             writer.write("tamanho.populacao;geracoes;prob.cross;prob.mut;testes\n");
-            writer.write(String.format(Locale.ROOT, "%d;%d;%f;%f;%d\n", 
+            writer.write(String.format("%d;%d;%f;%f;%d\n", 
                     populationSize, generations, probCrossover, probMutate, tests));
         }
         catch (IOException e) {

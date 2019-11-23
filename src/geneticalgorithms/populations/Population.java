@@ -10,12 +10,14 @@ import geneticalgorithms.cromossomes.ICromossomeFactory;
 import geneticalgorithms.cromossomes.Cromossome;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 /**
  *
  * @author Fabricio
  */
 public class Population {
+    private int cromoCount;
     private List<Cromossome> cromossomes;
     private Cromossome bestCromossome;
     private Cromossome worstCromossome;
@@ -26,6 +28,8 @@ public class Population {
     private double probCrossover;
     private double probMutate;
     private int size;
+    
+    private String previousGenerationSummary;
     
     private final ICromossomeFactory cromossomeFactory;
     
@@ -117,6 +121,20 @@ public class Population {
         this.size = size;
     }
     
+    /**
+     * @return the string resuming the generation that generate the current one
+     */
+    public final String getPreviousGenerationSummary() {
+        return this.previousGenerationSummary;
+    }
+    
+    /**
+     * @param genSumm previous generation summary
+     */
+    protected final void setPreviousGenerationSummary(String genSumm) {
+        this.previousGenerationSummary = genSumm;
+    }
+    
     // calculate fitness sum
     private double sumFitness() {
         this.sumFitness = 0;
@@ -133,6 +151,7 @@ public class Population {
         for(int i = 0; i < this.getSize(); i++) {
             Cromossome cromossome = cromossomeFactory.getNewCromossome();
             cromossome.initGenes();
+            cromossome.setId(++cromoCount);
             cromos.add(cromossome);
         }
         this.setCromossomes(cromos);
@@ -161,6 +180,7 @@ public class Population {
     }
     
     // generate the next generation usim SGA
+    // return the old generatoion
     public void nextGeneration(GenerationStatistics stat){
         List<Cromossome> newGeneration = new ArrayList();
         for(int i=0; i <  getSize(); i++) {
@@ -168,9 +188,12 @@ public class Population {
             Cromossome parent2 = select();
             Cromossome son = parent1.evolve(parent2, getProbMutate(), 
                     getProbCrossover(), stat);
-            
+            son.setId(++cromoCount);
             newGeneration.add(son);
         }
+        
+        setPreviousGenerationSummary(populationSummaryResume());
+        
         setCromossomes(newGeneration);
         // calc fitness sum
         sumFitness();
@@ -215,6 +238,7 @@ public class Population {
         this.setSize(size);
         this.cromossomeFactory = cromossomeFactory;
         generationNum = 0;
+        this.cromoCount = 0;
     }
     
     public String popuplationSummary() {
@@ -224,7 +248,25 @@ public class Population {
         for(Cromossome cromo : this.cromossomes) {
             String s = cromo.cromossomeSummary(size);
             sb.append(s);
-        };
+        }
+        
+        return sb.toString();
+    }
+    
+    public String populationSummaryResume() {
+        StringBuilder sb = new StringBuilder();
+        
+        sb.append(String.format("Geração: %d | Média Avaliação: %f\n", this.getGenerationNum(), this.getAvgFitness()));
+        
+        for(Cromossome cromo : this.cromossomes) {
+            double estRate = cromo.getFitness() / this.sumFitness;
+            sb.append(String.format(Locale.ROOT, "ID: %d; "
+                    + "Aval: %.2f; SelRate: %.3f; EstSelRate: %.3f\n", 
+                    cromo.getId(), cromo.getFitness(), (0.5 * cromo.getSelected() / size),
+                    estRate));
+        }
+        
+        sb.append("\n\n");
         
         return sb.toString();
     }
@@ -235,5 +277,9 @@ public class Population {
         return String.format("Geração: %d\n"
                 + "Média avaliação: %f\n"
                 + "Melhor cromossomo: " + this.getBestCromossome().toString() + "\n", this.getGenerationNum(), this.getAvgFitness());
+    }
+    
+    public boolean saveCromossomes(String filename){
+        return this.cromossomeFactory.saveCromossomes(filename, this);
     }
 }

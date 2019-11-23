@@ -6,6 +6,10 @@
 package geneticalgorithms.cromossomes;
 
 import geneticalgorithms.cromossomes.operators.*;
+import geneticalgorithms.populations.Population;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 
 /**
  *
@@ -71,6 +75,24 @@ public class Cromossome2Factory implements ICromossomeFactory{
                 c = new Cromossome2(cross, mute);
         }
         return c;
+    }
+    
+    @Override
+    public boolean saveCromossomes(String filename, Population population) {
+        try(BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
+            writer.write("Cromossomo; fit; E\n");
+            for(int j = 0; j < population.getSize(); j++) {
+                Cromossome2 c = (Cromossome2) population.getCromossomes().get(j);
+                writer.write(String.format("%d;%f;%d\n", 
+                        j + 1, c.getFitness(), c.getEnergy()));
+            }
+        }
+        catch (IOException e) {
+            System.out.println("Erro ao gravar arquivo de resultados: " + filename);
+            System.out.println(e.getMessage());
+            return false;
+        }
+        return true; 
     }
     
     public static enum Cromossome2Type {

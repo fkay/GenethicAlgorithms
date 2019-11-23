@@ -24,26 +24,27 @@ import java.util.ArrayList;
 public class SimpleGA{
     private Population population;
 
-    private List<GenerationStatistics> stats;
+    private final List<GenerationStatistics> stats;
     
     protected List<String> summary;
+    protected List<String> summaryResume;
     
     // the best cromossome of all gnerations
     // can be lost due no elitist selection and mutation
     private Cromossome bestCromossomeAll;
     
-    public void execute(int generations, boolean quiet, boolean saveSummary) {
+    public void execute(int generations, boolean quiet, boolean saveSummary, String distFilename) {
         if(getPopulation() == null) {
             System.out.println("Nenhuma populacao configurada");
             return;
         }
-        final int step = generations / 15;
-        
-        if(saveSummary) {
-            summary = new ArrayList<>();
-        }
+        final int step = (generations > 15 ? generations / 15 : 1);
         
         getPopulation().init();
+        
+        if(distFilename != null)
+            getPopulation().saveCromossomes(distFilename + String.format("t%d.csv", 0));
+        
         if(!quiet)
             printGenerationInfo(0);
         bestCromossomeAll = getPopulation().getBestCromossome();
@@ -57,15 +58,22 @@ public class SimpleGA{
                 printGenerationInfo(i);
             else
                 if( i % step == 0)
+                {
                     System.out.printf("Geração %d\n", i);
+                    // salva a distribuicao de cromossomos somente em algumas geracoes
+                    if(distFilename != null)
+                        getPopulation().saveCromossomes(distFilename + String.format("t%d.csv", i + 1));
+                }
             
             // append the summary for this generatios
             statistic.setPopulationDetails(population.getAvgFitness(), population.getBestCromossome(), population.getWorstCromossome());
             stats.add(statistic);
             
-            if(saveSummary) {
-                this.summary.add(this.getPopulation().popuplationSummary());
-            }
+            if(saveSummary) saveSummarys(i);
+            
+            // Salva distribuicao de cromossomos em todas as geracoes
+            //if(distFilename != null)
+            //    getPopulation().saveCromossomes(distFilename + String.format("t%d.csv", i + 1));
             
             if (bestCromossomeAll.getFitness() < getPopulation().getBestCromossome().getFitness()) {
                 bestCromossomeAll = getPopulation().getBestCromossome();
@@ -73,6 +81,10 @@ public class SimpleGA{
         }
         System.out.println("Melhor cromossomo das gerações:");
         System.out.println(bestCromossomeAll);
+        
+        // salva ultima distribuicao caso ainda não foi salva
+        if ((generations - 1) % step != 0 && distFilename != null)
+            getPopulation().saveCromossomes(distFilename + String.format("t%d.csv", generations));
     }
     
     // Print generation information (can be override to show other things)
@@ -154,5 +166,27 @@ public class SimpleGA{
             System.out.println("Erro ao gravar arquivo de resumo: " + filename);
             System.out.println(e.getMessage());
         }
+    }
+    
+    public final void summaryResumeToFile(String filename) {
+        try(BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
+            for (String summ : summaryResume) {
+                writer.write(summ);
+            }
+        }
+        catch (IOException e) {
+            System.out.println("Erro ao gravar arquivo de resumo: " + filename);
+            System.out.println(e.getMessage());
+        }
+    }
+    
+    protected void saveSummarys(int geracao) {
+        if(geracao == 0) {
+            this.summary = new ArrayList<>();
+            this.summaryResume = new ArrayList<>();
+        }
+        
+        this.summary.add(this.getPopulation().popuplationSummary());
+        this.summaryResume.add(this.getPopulation().getPreviousGenerationSummary());
     }
 }

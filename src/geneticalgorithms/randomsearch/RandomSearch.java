@@ -37,7 +37,7 @@ public class RandomSearch {
         return this.stats;
     }
     
-    public RandomSearch(int size, ICromossomeFactory cromossomeFactory) {
+    public RandomSearch(int size, ICromossomeFactory cromossomeFactory, String distFilename) {
         population = new Population(size, 0, 0, cromossomeFactory);
         population.init();
         
@@ -47,6 +47,10 @@ public class RandomSearch {
         
         System.out.println("Melhor cromossomo usando Random search:");
         System.out.println(getPopulation().getBestCromossome());
+        
+        if(distFilename != null) {
+            this.population.saveCromossomes(distFilename);
+        }
     }
     
     public RandomSearch() {

@@ -5,7 +5,7 @@
  */
 package geneticalgorithms.cromossomes;
 
-import geneticalgorithms.cromossomes.Cromossome;
+import geneticalgorithms.populations.Population;
 
 /**
  *
@@ -13,4 +13,6 @@ import geneticalgorithms.cromossomes.Cromossome;
  */
 public interface ICromossomeFactory {
     public Cromossome getNewCromossome();
+    
+    public boolean saveCromossomes(String filename, Population population);
 }

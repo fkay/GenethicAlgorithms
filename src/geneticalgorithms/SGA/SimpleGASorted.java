@@ -19,16 +19,12 @@ public class SimpleGASorted extends SimpleGA {
     final int bestToSave;
     
     @Override
-    public void execute(int generations, boolean quiet, boolean saveSummary) {
+    public void execute(int generations, boolean quiet, boolean saveSummary, String distFilename) {
         if(getPopulation() == null) {
             System.out.println("Nenhuma popuplacao configurada");
             return;
         }
         final int step = generations / 15;
-        
-        if(saveSummary){
-            this.summary = new ArrayList<>();
-        }
         
         getPopulation().init();
         if(!quiet)
@@ -53,10 +49,7 @@ public class SimpleGASorted extends SimpleGA {
             // append the summary for this generatios
             this.getStatistics().add(statistic);
             
-            if(saveSummary) {
-                String s = this.getPopulation().popuplationSummary();
-                this.summary.add(s);
-            }
+            if(saveSummary) saveSummarys(i);
             
             if (this.getBestCromossomeAll().getFitness() < getPopulation().getBestCromossome().getFitness()) {
                 this.setBestCromossomeAll(getPopulation().getBestCromossome());

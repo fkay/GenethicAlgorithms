@@ -22,7 +22,7 @@ public class Cromossome1 extends Cromossome<Boolean> {
     private final int bitsX = 15;
     private final int bitsY = 15;
     
-    private final double fator = (maxVal - minVal) / Math.pow(2, bitsX);
+    private final double fator = (maxVal - minVal) / (Math.pow(2, bitsX) - 1);
     
     private double x,y;
     
@@ -101,9 +101,17 @@ public class Cromossome1 extends Cromossome<Boolean> {
     protected String mutateMap() {
         StringBuilder sb = new StringBuilder();
         this.getGenesMutated().forEach((gH) -> {
-            sb.append(gH);
+            sb.append(gH ? "1" : "0");
         });
         return sb.toString();
+    }
+    
+    public double getX() {
+        return x;
+    }
+    
+    public double getY() {
+        return y;
     }
 
 }
