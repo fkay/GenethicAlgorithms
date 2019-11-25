@@ -27,19 +27,19 @@ public class GeneticAlgorithms {
         
         final int bestToSave = 3;   // how many cromossomes to save from top an bottom
         
-        final int populationSize = 50;
-        final int generations = 100;
+        final int populationSize = 30;
+        final int generations = 10;
         
-        final boolean saveFirstTesteResumes = false;
+        final boolean saveFirstTesteResumes = true;
         final boolean saveAllStatistics = false;
         
-        final double probMutate = 0.05;
+        final double probMutate = 0.02;
         final double probCrossover = 0.80;
-        //final ICromossomeFactory cromoFactory = new Cromossome2Factory(Cromossome2Factory.Cromossome2Type.c);
-        final ICromossomeFactory cromoFactory = new Cromossome1Factory();
+        final ICromossomeFactory cromoFactory = new Cromossome2Factory(Cromossome2Factory.Cromossome2Type.c);
+        //final ICromossomeFactory cromoFactory = new Cromossome1Factory();
         String filename;
         String baseFilename = "D:\\OneDrive\\IME-BMAC\\7o Sem - 01_2019\\MAP2040 - TC\\Resultados\\";
-        String file_pre = "C1";
+        String file_pre = "C2";
         
         //Locale.setDefault(new Locale("pt", "BR"));
         Locale.setDefault(Locale.ROOT);
@@ -49,8 +49,8 @@ public class GeneticAlgorithms {
         String distRandomFilename = baseFilename + String.format("Random_%s.csv", file_pre); // se usar nulos, nao salva
         
         for (int i = 0; i < tests; i++) {
-            //SimpleGA sga = new SimpleGASorted(populationSize, probMutate, probCrossover, cromoFactory, bestToSave);
-            SimpleGA sga = new SimpleGA(populationSize, probMutate, probCrossover, cromoFactory);
+            SimpleGA sga = new SimpleGASorted(populationSize, probMutate, probCrossover, cromoFactory, bestToSave);
+            //SimpleGA sga = new SimpleGA(populationSize, probMutate, probCrossover, cromoFactory);
             
             boolean saveResumes = (i == 0) && saveFirstTesteResumes;
             sga.execute(generations, true, saveResumes, distGAFilename);
@@ -62,14 +62,13 @@ public class GeneticAlgorithms {
                 sga.summaryResumeToFile(filename);
             }
             
-            RandomSearch randomSearch = new RandomSearch(populationSize * generations, cromoFactory, distRandomFilename);
-            //RandomSearchSorted randomSearchSorted = new RandomSearchSorted(populationSize * generations, cromoFactory, bestToSave);
+            //RandomSearch randomSearch = new RandomSearch(populationSize * generations, cromoFactory, distRandomFilename);
+            RandomSearchSorted randomSearch = new RandomSearchSorted(populationSize * generations, cromoFactory, bestToSave, distRandomFilename);
             
             if(saveAllStatistics) {
                 filename = baseFilename + String.format("summary_%s_%2d.csv", file_pre, i);
                 sga.statisticsToFile(filename);
                 filename = baseFilename + String.format("summary_%s_%2d_rs.csv", file_pre, i);
-                //randomSearchSorted.statisticsToFile(filename);
                 randomSearch.statisticsToFile(filename);
             }
             

@@ -16,7 +16,7 @@ import java.util.List;
  */
 public class Cromossome2 extends Cromossome<Integer> {
     // cromossome representa uma matriz 10x10
-    private final int rows = 5, cols = 5;
+    private final int rows = 10, cols = 10;
     private int countp;
     private int countm;
     
@@ -148,7 +148,7 @@ public class Cromossome2 extends Cromossome<Integer> {
     @Override
     protected String mutateMap() {
         StringBuilder sb = new StringBuilder();
-        sb.append(commomStringBuilder(this.getGenesMutated(),"%B"));
+        sb.append(commomStringBuilder(this.getGenesMutated(),"%.1B"));
         return sb.toString();
     }
 

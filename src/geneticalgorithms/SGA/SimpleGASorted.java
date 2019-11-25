@@ -8,7 +8,7 @@ package geneticalgorithms.SGA;
 import geneticalgorithms.Statistics.GenerationStatisticsSorted;
 import geneticalgorithms.cromossomes.ICromossomeFactory;
 import geneticalgorithms.populations.PopulationSorted;
-import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -19,14 +19,19 @@ public class SimpleGASorted extends SimpleGA {
     final int bestToSave;
     
     @Override
-    public void execute(int generations, boolean quiet, boolean saveSummary, String distFilename) {
+    public void execute(int generations, boolean quiet, boolean saveSummary, String distFilename, List<Integer> geracaoToSave) {
         if(getPopulation() == null) {
             System.out.println("Nenhuma popuplacao configurada");
             return;
         }
-        final int step = generations / 15;
+        final int step = (generations > 15 ? generations / 15 : 1);
         
         getPopulation().init();
+        
+        // always saves distribution for fist generation
+        if(distFilename != null)
+            getPopulation().saveCromossomes(distFilename + String.format("t%d.csv", 0));
+        
         if(!quiet)
             printGenerationInfo(0);
         this.setBestCromossomeAll(getPopulation().getBestCromossome());
@@ -42,7 +47,18 @@ public class SimpleGASorted extends SimpleGA {
                 printGenerationInfo(i);
             else
                 if( i % step == 0)
+                {
                     System.out.printf("Geração %d\n", i);
+                    // saves distribution on steps if request list is null
+                    if(distFilename != null && geracaoToSave == null)
+                        getPopulation().saveCromossomes(distFilename + String.format("t%d.csv", i + 1));
+                        
+                }
+            
+            // saves distribution on list requested
+            if(distFilename != null && geracaoToSave != null && geracaoToSave.contains(i + 1))
+                getPopulation().saveCromossomes(distFilename + String.format("t%d.csv", i + 1));
+
             statistic.setPopulationDetails(getPopulation().getAvgFitness(), 
                 getPopulation().getCromossomes().subList(0, bestToSave), 
                 getPopulation().getCromossomes().subList(getPopulation().getCromossomes().size() - bestToSave, getPopulation().getCromossomes().size()));
@@ -57,6 +73,18 @@ public class SimpleGASorted extends SimpleGA {
         }
         System.out.println("Melhor cromossomo das gerações:");
         System.out.println(this.getBestCromossomeAll());
+        
+        // saves last distribution if not saved yet
+        if (distFilename != null) {
+            if(geracaoToSave != null){
+                if(!geracaoToSave.contains(generations))
+                    getPopulation().saveCromossomes(distFilename + String.format("t%d.csv", generations));
+            }
+            else {
+                if((generations - 1) % step != 0)
+                    getPopulation().saveCromossomes(distFilename + String.format("t%d.csv", generations));
+            }
+        }
     }
     
     

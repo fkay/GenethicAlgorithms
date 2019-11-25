@@ -34,6 +34,10 @@ public class SimpleGA{
     private Cromossome bestCromossomeAll;
     
     public void execute(int generations, boolean quiet, boolean saveSummary, String distFilename) {
+        this.execute(generations, quiet, saveSummary, distFilename, null);
+    }
+    
+    public void execute(int generations, boolean quiet, boolean saveSummary, String distFilename, List<Integer> geracaoToSave) {
         if(getPopulation() == null) {
             System.out.println("Nenhuma populacao configurada");
             return;
@@ -42,6 +46,7 @@ public class SimpleGA{
         
         getPopulation().init();
         
+        // always saves distribution for fist generation
         if(distFilename != null)
             getPopulation().saveCromossomes(distFilename + String.format("t%d.csv", 0));
         
@@ -60,10 +65,16 @@ public class SimpleGA{
                 if( i % step == 0)
                 {
                     System.out.printf("Geração %d\n", i);
-                    // salva a distribuicao de cromossomos somente em algumas geracoes
-                    if(distFilename != null)
+                    // saves distribution on steps if request list is null
+                    if(distFilename != null && geracaoToSave == null)
                         getPopulation().saveCromossomes(distFilename + String.format("t%d.csv", i + 1));
+                        
                 }
+            
+            // saves distribution on list requested
+            if(distFilename != null && geracaoToSave != null && geracaoToSave.contains(i + 1))
+                getPopulation().saveCromossomes(distFilename + String.format("t%d.csv", i + 1));
+
             
             // append the summary for this generatios
             statistic.setPopulationDetails(population.getAvgFitness(), population.getBestCromossome(), population.getWorstCromossome());
@@ -71,7 +82,7 @@ public class SimpleGA{
             
             if(saveSummary) saveSummarys(i);
             
-            // Salva distribuicao de cromossomos em todas as geracoes
+            // Saves distribution of all generations
             //if(distFilename != null)
             //    getPopulation().saveCromossomes(distFilename + String.format("t%d.csv", i + 1));
             
@@ -82,9 +93,17 @@ public class SimpleGA{
         System.out.println("Melhor cromossomo das gerações:");
         System.out.println(bestCromossomeAll);
         
-        // salva ultima distribuicao caso ainda não foi salva
-        if ((generations - 1) % step != 0 && distFilename != null)
-            getPopulation().saveCromossomes(distFilename + String.format("t%d.csv", generations));
+        // saves last distribution if not saved yet
+        if (distFilename != null) {
+            if(geracaoToSave != null){
+                if(!geracaoToSave.contains(generations))
+                    getPopulation().saveCromossomes(distFilename + String.format("t%d.csv", generations));
+            }
+            else {
+                if((generations - 1) % step != 0)
+                    getPopulation().saveCromossomes(distFilename + String.format("t%d.csv", generations));
+            }
+        }
     }
     
     // Print generation information (can be override to show other things)
