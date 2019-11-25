@@ -11,6 +11,7 @@ import geneticalgorithms.cromossomes.*;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Locale;
 
 /**
@@ -35,7 +36,7 @@ public class GeneticAlgorithms {
         
         final double probMutate = 0.02;
         final double probCrossover = 0.80;
-        final ICromossomeFactory cromoFactory = new Cromossome2Factory(Cromossome2Factory.Cromossome2Type.c);
+        final ICromossomeFactory cromoFactory = new Cromossome2Factory(Cromossome2Factory.Cromossome2Type.a);
         //final ICromossomeFactory cromoFactory = new Cromossome1Factory();
         String filename;
         String baseFilename = "D:\\OneDrive\\IME-BMAC\\7o Sem - 01_2019\\MAP2040 - TC\\Resultados\\";
@@ -46,6 +47,8 @@ public class GeneticAlgorithms {
 
         String resultadoCompFileName = baseFilename + String.format("Comparativo_%s.csv", file_pre);
         String distGAFilename = baseFilename + String.format("GA_%s_", file_pre);    // execução do GA completa com geracao e .csv
+        String distGAFilename_temp;
+        Integer[] genToSave = {10, 20, 30, 40};
         String distRandomFilename = baseFilename + String.format("Random_%s.csv", file_pre); // se usar nulos, nao salva
         
         for (int i = 0; i < tests; i++) {
@@ -53,7 +56,8 @@ public class GeneticAlgorithms {
             //SimpleGA sga = new SimpleGA(populationSize, probMutate, probCrossover, cromoFactory);
             
             boolean saveResumes = (i == 0) && saveFirstTesteResumes;
-            sga.execute(generations, true, saveResumes, distGAFilename);
+            distGAFilename_temp = distGAFilename + String.format("t%d_", i + 1);
+            sga.execute(generations, true, saveResumes, distGAFilename_temp, Arrays.asList(genToSave));
         
             if(saveResumes){
                 filename = baseFilename + String.format("resumo_%s_%2d.txt", file_pre, i);
@@ -73,8 +77,8 @@ public class GeneticAlgorithms {
             }
             
             // só salva a distribuição das gerações no primeiro
-            distRandomFilename = null;
-            distGAFilename = null;
+            //distRandomFilename = null;
+            //distGAFilename = null;
             
             try(BufferedWriter writer = new BufferedWriter(new FileWriter(resultadoCompFileName, i != 0 ))) {
                 if(i == 0) writer.write("Teste; Melhor GA; Melhor RANDOM \n");

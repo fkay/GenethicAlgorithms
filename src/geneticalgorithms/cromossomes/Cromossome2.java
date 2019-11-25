@@ -20,6 +20,10 @@ public class Cromossome2 extends Cromossome<Integer> {
     private int countp;
     private int countm;
     
+    private int energy;
+    
+    private final double beta = 0.05;
+    
     private final List<Integer> states;
     
      public Cromossome2(ICrossOver crossover, IMutate mutate){
@@ -87,10 +91,9 @@ public class Cromossome2 extends Cromossome<Integer> {
                     sum += genes.get(cols*i + j)*genes.get(cols*i + j+1);
             }
         }
-        // calc the max negative value
-        int maxNegative = 2 * rows * cols - rows - cols;
+        this.energy = sum;
         // sum the max negative to avoid negative values on fitness
-        return sum + maxNegative;
+        return Math.exp(-beta * energy);
     }
     
     /**
@@ -99,7 +102,7 @@ public class Cromossome2 extends Cromossome<Integer> {
      */
     public int getEnergy() {
         // return fitness value puting back negative values
-        return (int) this.getFitness() - (2 * rows * cols - rows - cols);
+        return this.energy;
     }
 
     // retrun string representing the fenotype of the cromossome

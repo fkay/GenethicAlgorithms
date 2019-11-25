@@ -37,7 +37,7 @@ public class SimpleGA{
         this.execute(generations, quiet, saveSummary, distFilename, null);
     }
     
-    public void execute(int generations, boolean quiet, boolean saveSummary, String distFilename, List<Integer> geracaoToSave) {
+    public void execute(int generations, boolean quiet, boolean saveSummary, String distFilename, List<Integer> genToSave) {
         if(getPopulation() == null) {
             System.out.println("Nenhuma populacao configurada");
             return;
@@ -48,7 +48,7 @@ public class SimpleGA{
         
         // always saves distribution for fist generation
         if(distFilename != null)
-            getPopulation().saveCromossomes(distFilename + String.format("t%d.csv", 0));
+            getPopulation().saveCromossomes(distFilename + String.format("g%d.csv", 0));
         
         if(!quiet)
             printGenerationInfo(0);
@@ -66,14 +66,14 @@ public class SimpleGA{
                 {
                     System.out.printf("Geração %d\n", i);
                     // saves distribution on steps if request list is null
-                    if(distFilename != null && geracaoToSave == null)
-                        getPopulation().saveCromossomes(distFilename + String.format("t%d.csv", i + 1));
+                    if(distFilename != null && genToSave == null)
+                        getPopulation().saveCromossomes(distFilename + String.format("g%d.csv", i + 1));
                         
                 }
             
             // saves distribution on list requested
-            if(distFilename != null && geracaoToSave != null && geracaoToSave.contains(i + 1))
-                getPopulation().saveCromossomes(distFilename + String.format("t%d.csv", i + 1));
+            if(distFilename != null && genToSave != null && genToSave.contains(i + 1))
+                getPopulation().saveCromossomes(distFilename + String.format("g%d.csv", i + 1));
 
             
             // append the summary for this generatios
@@ -95,13 +95,13 @@ public class SimpleGA{
         
         // saves last distribution if not saved yet
         if (distFilename != null) {
-            if(geracaoToSave != null){
-                if(!geracaoToSave.contains(generations))
-                    getPopulation().saveCromossomes(distFilename + String.format("t%d.csv", generations));
+            if(genToSave != null){
+                if(!genToSave.contains(generations))
+                    getPopulation().saveCromossomes(distFilename + String.format("g%d.csv", generations));
             }
             else {
                 if((generations - 1) % step != 0)
-                    getPopulation().saveCromossomes(distFilename + String.format("t%d.csv", generations));
+                    getPopulation().saveCromossomes(distFilename + String.format("g%d.csv", generations));
             }
         }
     }
