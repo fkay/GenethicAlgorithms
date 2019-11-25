@@ -22,7 +22,7 @@ public class RandomSearchSorted extends RandomSearch{
         
         this.setStats(new GenerationStatisticsSorted(getPopulation().getSize(), 0) );
         
-        ((GenerationStatisticsSorted)this.getStats()).setPopulationDetails(getPopulation().getAvgFitness(), 
+        ((GenerationStatisticsSorted)this.getStats()).setPopulationDetails(getPopulation().getAvgFitness(), getPopulation().getVarFitness(),
                 getPopulation().getCromossomes().subList(0, bestToSave), 
                 getPopulation().getCromossomes().subList(getPopulation().getCromossomes().size() - bestToSave, getPopulation().getCromossomes().size()));    
         System.out.println("Melhor cromossomo usando Random search:");

@@ -19,6 +19,7 @@ public class GenerationStatistics {
     private Cromossome bestCromossome;
     private Cromossome worstCromossome;
     private double avgFitness;
+    private double varFitness;
     private final int popSize;
     private final int generationNumber;
 
@@ -113,6 +114,20 @@ public class GenerationStatistics {
      */
     public double getAvgFitness() {
         return avgFitness;
+    }
+    
+     /**
+     * @param varFitness the avgFitness to set
+     */
+    public void setVarFitness(double varFitness) {
+        this.varFitness = varFitness;
+    }
+
+    /**
+     * @return the varFitness
+     */
+    public double getVarFitness() {
+        return varFitness;
     }
     
     /**

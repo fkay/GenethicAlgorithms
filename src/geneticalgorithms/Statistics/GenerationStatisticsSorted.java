@@ -7,7 +7,6 @@ package geneticalgorithms.Statistics;
 
 import geneticalgorithms.cromossomes.Cromossome;
 import java.util.List;
-import java.util.Locale;
 
 /**
  *
@@ -51,8 +50,9 @@ public class GenerationStatisticsSorted extends GenerationStatistics {
         this.setWorstCromossome(bottomCromossomes.get(bottomCromossomes.size()-1));
     }
     
-    public void setPopulationDetails(double avgFitness, List<Cromossome> best, List<Cromossome> worst) {
+    public void setPopulationDetails(double avgFitness, double varFitness, List<Cromossome> best, List<Cromossome> worst) {
         this.setAvgFitness(avgFitness);
+        this.setVarFitness(varFitness);
         this.setTopCromossomes(best);
         this.setBottomCromossomes(worst);
     }
@@ -68,7 +68,7 @@ public class GenerationStatisticsSorted extends GenerationStatistics {
         for (int i = 0; i < bottomCromossomes.size(); i++) {
             sb.append(String.format("%f;",this.getBottomCromossomes().get(i).getFitness()));
         }
-        sb.append(String.format("%f; %f; %f\n", this.getAvgFitness(), 
+        sb.append(String.format("%f; %f; %f; %f\n", this.getAvgFitness(), this.getVarFitness(),
                 this.getCrossoverCromossomeTx(),
                 this.getMutatedCromossomeTx()) );
         return  sb.toString();
@@ -83,7 +83,7 @@ public class GenerationStatisticsSorted extends GenerationStatistics {
         for (int i = 0; i < bottomCromossomes.size(); i++) {
             sb.append(String.format("Pior%d;", i + 1));
         }
-        sb.append("Media;Tx Crossover;Tx Mutacao\n");
+        sb.append("Media;Var;Tx Crossover;Tx Mutacao\n");
         return sb.toString();
     }
     

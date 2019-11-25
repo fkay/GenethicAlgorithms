@@ -29,14 +29,14 @@ public class GeneticAlgorithms {
         final int bestToSave = 3;   // how many cromossomes to save from top an bottom
         
         final int populationSize = 30;
-        final int generations = 10;
+        final int generations = 40;
         
-        final boolean saveFirstTesteResumes = true;
-        final boolean saveAllStatistics = false;
+        final boolean saveFirstTesteResumes = false;
+        final boolean saveAllStatistics = true;
         
         final double probMutate = 0.02;
-        final double probCrossover = 0.80;
-        final ICromossomeFactory cromoFactory = new Cromossome2Factory(Cromossome2Factory.Cromossome2Type.a);
+        final double probCrossover = 0.8;
+        final ICromossomeFactory cromoFactory = new Cromossome2Factory(Cromossome2Factory.Cromossome2Type.c);
         //final ICromossomeFactory cromoFactory = new Cromossome1Factory();
         String filename;
         String baseFilename = "D:\\OneDrive\\IME-BMAC\\7o Sem - 01_2019\\MAP2040 - TC\\Resultados\\";

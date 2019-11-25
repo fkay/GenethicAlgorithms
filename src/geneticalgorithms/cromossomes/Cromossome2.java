@@ -91,7 +91,7 @@ public class Cromossome2 extends Cromossome<Integer> {
                     sum += genes.get(cols*i + j)*genes.get(cols*i + j+1);
             }
         }
-        this.energy = sum;
+        this.energy = -sum;
         // sum the max negative to avoid negative values on fitness
         return Math.exp(-beta * energy);
     }

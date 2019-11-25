@@ -205,6 +205,16 @@ public class Population {
         return getSumFitness() / getSize();
     }
     
+    // return the variance for fitness
+    public double getVarFitness() {
+        double sum = 0;
+        double avg = getAvgFitness();
+        for(Cromossome c: getCromossomes()){
+            sum += Math.pow(c.getFitness() - avg, 2);
+        }
+        return sum/(this.getSize() - 1);
+    }
+    
     // return the count of mutated cromossomes
     public int countMutated() {
         int mut = 0;
