@@ -71,6 +71,10 @@ public class Population {
     public double getSumFitness() {
         return sumFitness;
     }
+    
+    private void setSumFitness(double newSum) {
+        this.sumFitness = newSum;
+    }
 
     /**
      * @return the generationNum
@@ -136,12 +140,12 @@ public class Population {
     }
     
     // calculate fitness sum
-    private double sumFitness() {
-        this.sumFitness = 0;
-        getCromossomes().forEach((cromossome) -> {
-            sumFitness += cromossome.getFitness();
-        });
-        
+    protected double sumFitness() {
+        double sum = 0;
+        for(Cromossome c : getCromossomes()) {
+            sum += c.getFitness();
+        }
+        this.setSumFitness(sum);
         return (this.getSumFitness());
     }
 
@@ -196,7 +200,7 @@ public class Population {
         
         setCromossomes(newGeneration);
         // calc fitness sum
-        sumFitness();
+        //sumFitness();
         generationNum++;
     }
     
@@ -211,6 +215,24 @@ public class Population {
         double avg = getAvgFitness();
         for(Cromossome c: getCromossomes()){
             sum += Math.pow(c.getFitness() - avg, 2);
+        }
+        return sum/(this.getSize() - 1);
+    }
+    
+    // return the average from some special parameter from cromossomoes
+    public double getAvgSpecial() {
+        double sum = 0;
+        for(Cromossome c: getCromossomes()){
+            sum += c.getSpecial();
+        }
+        return sum/this.getSize();
+    }
+    
+    public double getVarSpecial() {
+        double sum = 0;
+        double avg = getAvgSpecial();
+        for(Cromossome c: getCromossomes()){
+            sum += Math.pow(c.getSpecial() - avg, 2);
         }
         return sum/(this.getSize() - 1);
     }

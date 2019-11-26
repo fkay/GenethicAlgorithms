@@ -16,7 +16,7 @@ import geneticalgorithms.populations.PopulationSorted;
 public class RandomSearchSorted extends RandomSearch{
     
     public RandomSearchSorted(int size, ICromossomeFactory cromossomeFactory, int bestToSave, String distFilename) {
-        this.setPopulation(new PopulationSorted(size, 0,0,cromossomeFactory));
+        this.setPopulation(new PopulationSorted(size, 0, 0, 0, cromossomeFactory));
         
         getPopulation().init();
         

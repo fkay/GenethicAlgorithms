@@ -36,7 +36,7 @@ public class SimpleGASorted extends SimpleGA {
             printGenerationInfo(0);
         this.setBestCromossomeAll(getPopulation().getBestCromossome());
         GenerationStatisticsSorted statistic = new GenerationStatisticsSorted(getPopulation().getSize(), 0);
-        statistic.setPopulationDetails(getPopulation().getAvgFitness(), getPopulation().getVarFitness(), 
+        statistic.setPopulationDetails(getPopulation().getAvgSpecial(), getPopulation().getVarSpecial(), 
                 getPopulation().getCromossomes().subList(0, bestToSave), 
                 getPopulation().getCromossomes().subList(getPopulation().getCromossomes().size() - bestToSave, getPopulation().getCromossomes().size()));
         this.getStatistics().add(statistic);
@@ -59,7 +59,7 @@ public class SimpleGASorted extends SimpleGA {
             if(distFilename != null && genToSave != null && genToSave.contains(i + 1))
                 getPopulation().saveCromossomes(distFilename + String.format("g%d.csv", i + 1));
 
-            statistic.setPopulationDetails(getPopulation().getAvgFitness(), getPopulation().getVarFitness(), 
+            statistic.setPopulationDetails(getPopulation().getAvgSpecial(), getPopulation().getVarSpecial(), 
                 getPopulation().getCromossomes().subList(0, bestToSave), 
                 getPopulation().getCromossomes().subList(getPopulation().getCromossomes().size() - bestToSave, getPopulation().getCromossomes().size()));
             // append the summary for this generatios
@@ -88,10 +88,9 @@ public class SimpleGASorted extends SimpleGA {
     }
     
     
-    public SimpleGASorted(int sizePopulation, double probMutate, 
-            double probCrossover, ICromossomeFactory cromossomeFactory,
-            int bestToSave) {
-        this.setPopulation(new PopulationSorted(sizePopulation, probMutate, probCrossover, cromossomeFactory));
+    public SimpleGASorted(int sizePopulation, double probMutate, double probCrossover, 
+            int elite, ICromossomeFactory cromossomeFactory, int bestToSave) {
+        this.setPopulation(new PopulationSorted(sizePopulation, probMutate, probCrossover, elite, cromossomeFactory));
         this.bestToSave = bestToSave;
     }
     

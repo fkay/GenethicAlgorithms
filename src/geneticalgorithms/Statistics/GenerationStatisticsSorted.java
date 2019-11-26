@@ -63,10 +63,10 @@ public class GenerationStatisticsSorted extends GenerationStatistics {
         StringBuilder sb = new StringBuilder();
         sb.append(String.format("%d;", this.getGenerationNumber()));
         for (int i = 0; i < topCromossomes.size(); i++) {
-            sb.append(String.format("%f;",this.getTopCromossomes().get(i).getFitness()));
+            sb.append(String.format("%f;",this.getTopCromossomes().get(i).getSpecial()));
         }
         for (int i = 0; i < bottomCromossomes.size(); i++) {
-            sb.append(String.format("%f;",this.getBottomCromossomes().get(i).getFitness()));
+            sb.append(String.format("%f;",this.getBottomCromossomes().get(i).getSpecial()));
         }
         sb.append(String.format("%f; %f; %f; %f\n", this.getAvgFitness(), this.getVarFitness(),
                 this.getCrossoverCromossomeTx(),

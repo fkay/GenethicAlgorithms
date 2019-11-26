@@ -83,6 +83,13 @@ public abstract class Cromossome<T> implements Comparable<Cromossome> {
     }
     
     /**
+     * @return some special variable if any
+     */
+    public double getSpecial() {
+        return fitness;
+    } 
+    
+    /**
      * @param fitness the fitness to set
      */
     protected void setFitness(double fitness) {
@@ -222,22 +229,28 @@ public abstract class Cromossome<T> implements Comparable<Cromossome> {
         StringBuilder sb = new StringBuilder();
         sb.append("#### CHILD #####\n");
         sb.append(this.toString());
-        
-        sb.append("#### PARENT 1 #####\n");
-        sb.append(this.parent1.toString());
-        sb.append(String.format("Selecionado %d vezes, %.2f\n\n", this.parent1.selected, (1.0 * this.parent1.selected) / popSize));
-        sb.append("#### PARENT 2 #####\n");
-        sb.append(this.parent2.toString());
-        sb.append(String.format("Selecionado %d vezes, %.2f\n\n", this.parent2.selected, (1.0 * this.parent2.selected) / popSize));
-        
-        sb.append("### HERITAGE MAP ###\n");
-        sb.append(this.heritageMap());
-        sb.append("\n");
-        
-        sb.append("### MUTATE MAP\n");
-        sb.append(this.mutateMap());
-        sb.append("\n");
-                
+
+        if(this.parent1 == null) {
+            sb.append("### CROMOSSOMO GERADO NA POP INICIAL ####\n\n");
+        }
+        else {
+            sb.append("#### PARENT 1 #####\n");
+            sb.append(this.parent1.toString());
+            sb.append(String.format("Selecionado %d vezes, %.2f\n\n", this.parent1.selected, (1.0 * this.parent1.selected) / popSize));
+
+            sb.append("#### PARENT 2 #####\n");
+
+            sb.append(this.parent2.toString());
+            sb.append(String.format("Selecionado %d vezes, %.2f\n\n", this.parent2.selected, (1.0 * this.parent2.selected) / popSize));
+
+            sb.append("### HERITAGE MAP ###\n");
+            sb.append(this.heritageMap());
+            sb.append("\n");
+
+            sb.append("### MUTATE MAP\n");
+            sb.append(this.mutateMap());
+            sb.append("\n");
+        }
         return sb.toString();
     }
    

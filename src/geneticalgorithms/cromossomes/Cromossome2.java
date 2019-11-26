@@ -104,6 +104,11 @@ public class Cromossome2 extends Cromossome<Integer> {
         // return fitness value puting back negative values
         return this.energy;
     }
+    
+    @Override
+    public double getSpecial() {
+        return this.energy;
+    }
 
     // retrun string representing the fenotype of the cromossome
     @Override
