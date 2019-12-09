@@ -60,8 +60,8 @@ public class RandomSearch {
     // Save summary collection to a file for reports
     public final void statisticsToFile(String filename) {
         try(BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
-            writer.write(stats.summaryHeader());
-            writer.write(stats.summaryLine());
+            writer.write(stats.statsHeader());
+            writer.write(stats.statsLine());
         }
         catch (IOException e) {
             System.out.println("Erro ao gravar arquivo de resutlados: " + filename);

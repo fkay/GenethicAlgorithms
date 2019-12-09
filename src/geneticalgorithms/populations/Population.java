@@ -303,6 +303,19 @@ public class Population {
         return sb.toString();
     }
     
+    public String populationBestMap() {
+        StringBuilder sb = new StringBuilder();
+        
+        sb.append(String.format("Geracao: %d | Media Avaliacao: %f | Melhor: %f \n", 
+                this.getGenerationNum(), this.getAvgFitness(), this.getBestCromossome().getSpecial()));
+        
+        sb.append(this.getBestCromossome().printMap());
+        
+        sb.append("\n");
+        
+        return sb.toString();
+    }
+    
     // return instance string
     @Override
     public String toString(){

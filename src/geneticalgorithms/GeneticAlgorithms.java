@@ -26,21 +26,28 @@ public class GeneticAlgorithms {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        final int tests = 5;
+        final int tests = 1;
         
-        final int bestToSave = 1;   // how many cromossomes to save from top an bottom
+        final int bestToSave = 5;   // how many cromossomes to save from top an bottom
         
         final int elite = 3;        // cromossomes to retain on each generation
         
-        final int populationSize = 50;
-        final int generations = 300;
+        final int populationSize = 30;
+        final int generations = 40;
         
         final boolean saveFirstTesteResumes = false;
         final boolean saveAllStatistics = true;
         
-        final double probMutate = 0.000;
+        final double probMutate = 0.02;
         final double probCrossover = 0.95;
-        final ICromossomeFactory cromoFactory = new Cromossome2Factory(Cromossome2Factory.Cromossome2Type.c);
+        
+        final double beta = 0.1;
+        
+        Cromossome2Factory cromofactory = new Cromossome2Factory(Cromossome2Factory.Cromossome2Type.d);
+        cromofactory.setBeta(beta);
+        
+        ICromossomeFactory cromoFactory = cromofactory;
+        //final ICromossomeFactory cromoFactory = new Cromossome2Factory(Cromossome2Factory.Cromossome2Type.c);
         //final ICromossomeFactory cromoFactory = new Cromossome1Factory();
         String filename;
         String baseFilename = "D:\\OneDrive\\IME-BMAC\\7o Sem - 01_2019\\MAP2040 - TC\\Resultados\\";
@@ -65,22 +72,27 @@ public class GeneticAlgorithms {
             
             boolean saveResumes = (i == 0) && saveFirstTesteResumes;
             distGAFilename_temp = distGAFilename + String.format("t%d_", i + 1);
+            distGAFilename_temp = null;
             sga.execute(generations, true, saveResumes, distGAFilename_temp, Arrays.asList(genToSave));
         
             if(saveResumes){
-                filename = baseFilename + String.format("resumo_%s_%2d.txt", file_pre, i);
+                filename = baseFilename + String.format("resumo_%s_t%d.txt", file_pre, i+1);
                 sga.summaryToFile(filename);
-                filename = baseFilename + String.format("resumo2_%s_%2d.txt", file_pre, i);
+                filename = baseFilename + String.format("resumo2_%s_t%d.txt", file_pre, i+1);
                 sga.summaryResumeToFile(filename);
+                
+                filename = baseFilename + String.format("MapasMelhores_%s_t%d.csv", file_pre, i+1);
+                sga.summaryBestMapsToFile(filename);
             }
             
+            distRandomFilename = null;
             //RandomSearch randomSearch = new RandomSearch(populationSize * generations, cromoFactory, distRandomFilename);
             RandomSearchSorted randomSearch = new RandomSearchSorted(populationSize * generations, cromoFactory, bestToSave, distRandomFilename);
             
             if(saveAllStatistics) {
-                filename = baseFilename + String.format("summary_%s_%d.csv", file_pre, i);
+                filename = baseFilename + String.format("summary_%s_t%d.csv", file_pre, i+1);
                 sga.statisticsToFile(filename);
-                filename = baseFilename + String.format("summary_%s_%d_rs.csv", file_pre, i);
+                filename = baseFilename + String.format("summary_%s_t%d_rs.csv", file_pre, i+1);
                 randomSearch.statisticsToFile(filename);
             }
             
@@ -101,9 +113,9 @@ public class GeneticAlgorithms {
         
         filename = "D:\\OneDrive\\IME-BMAC\\7o Sem - 01_2019\\MAP2040 - TC\\Resultados\\Parameters_" + file_pre + ".csv";
         try(BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
-            writer.write("tamanho.populacao;geracoes;prob.cross;prob.mut;testes\n");
-            writer.write(String.format("%d;%d;%f;%f;%d\n", 
-                    populationSize, generations, probCrossover, probMutate, tests));
+            writer.write("tamanho.populacao;geracoes;prob.cross;prob.mut;beta;testes\n");
+            writer.write(String.format("%d;%d;%f;%f;%f;%d\n", 
+                    populationSize, generations, probCrossover, probMutate, beta, tests));
         }
         catch (IOException e) {
             System.out.println("Erro ao gravar arquivo de resutlados: " + filename);

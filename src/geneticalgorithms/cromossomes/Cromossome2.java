@@ -16,24 +16,25 @@ import java.util.List;
  */
 public class Cromossome2 extends Cromossome<Integer> {
     // cromossome representa uma matriz 10x10
-    private final int rows = 10, cols = 10;
+    static public final int rows = 10, cols = 10;
     private int countp;
     private int countm;
     
     private int energy;
     
-    private final double beta = 0.05;
+    private double beta = 0.05;
     
     private final List<Integer> states;
     
-     public Cromossome2(ICrossOver crossover, IMutate mutate){
+     public Cromossome2(ICrossOver crossover, IMutate mutate, double beta){
         super(crossover, mutate);
         states = Arrays.asList(-1,1);
+        this.beta = beta;
         setMutated(false);
     }
      
     public Cromossome2(Cromossome2 cromo) {
-        this(cromo.icrossover, cromo.imutate);
+        this(cromo.icrossover, cromo.imutate, cromo.beta);
     }
     
     @Override
@@ -53,6 +54,10 @@ public class Cromossome2 extends Cromossome<Integer> {
      */
     public int getCountm() {
         return countm;
+    }
+    
+    public double getBeta() {
+        return this.beta;
     }
     
      protected void countGenes() {
@@ -124,6 +129,27 @@ public class Cromossome2 extends Cromossome<Integer> {
         return sb.toString();
     }
     
+    public String printMap() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("\n");
+        
+        List<Integer> genes = this.getGenes();
+        
+        for(int i = 0; i < rows; i++) {
+            for(int j = 0; j < cols; j++) {
+                sb.append(String.format("%d",genes.get(cols*i + j)));
+                if(j != cols - 1)
+                    sb.append(";");
+                else
+                    sb.append("\n");
+            }
+        }
+        
+        sb.append("\n");
+        
+        return sb.toString();
+    }
+    
     private String commomStringBuilder(List genes, String format){
         StringBuilder sb = new StringBuilder();
         
@@ -156,7 +182,7 @@ public class Cromossome2 extends Cromossome<Integer> {
     @Override
     protected String mutateMap() {
         StringBuilder sb = new StringBuilder();
-        sb.append(commomStringBuilder(this.getGenesMutated(),"%.1B"));
+        sb.append(commomStringBuilder(this.getGenesMutated(),"%.2B"));
         return sb.toString();
     }
 

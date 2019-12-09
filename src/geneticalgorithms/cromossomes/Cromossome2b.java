@@ -12,7 +12,7 @@ import geneticalgorithms.cromossomes.operators.*;
  * @author Fabricio
  */
 public class Cromossome2b extends Cromossome2 {
-    public Cromossome2b(ICrossOver crossover, IMutate mutate){
-        super(crossover, mutate);
+    public Cromossome2b(ICrossOver crossover, IMutate mutate, double beta){
+        super(crossover, mutate, beta);
     }    
 }

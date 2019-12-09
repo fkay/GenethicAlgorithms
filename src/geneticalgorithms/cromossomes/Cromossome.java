@@ -225,6 +225,10 @@ public abstract class Cromossome<T> implements Comparable<Cromossome> {
                 + "Avaliação: %f\n", this.id, this.fitness);
     }
     
+    public String printMap(){
+        return "Not implemented";
+    }
+    
     public String cromossomeSummary(int popSize) {
         StringBuilder sb = new StringBuilder();
         sb.append("#### CHILD #####\n");

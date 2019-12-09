@@ -20,6 +20,8 @@ public class Cromossome2Factory implements ICromossomeFactory{
     private ICrossOver cross;
     private IMutate mute;
     
+    private double beta = 0.05;
+    
     /**
      * @return 
      */
@@ -32,6 +34,14 @@ public class Cromossome2Factory implements ICromossomeFactory{
      */
     public void setType(Cromossome2Type value){
         type = value;
+    }
+    
+    public double getBeta(){
+        return beta;
+    }
+    
+    public void setBeta(double beta) {
+        this.beta = beta;
     }
     
     public Cromossome2Factory() {
@@ -53,6 +63,9 @@ public class Cromossome2Factory implements ICromossomeFactory{
             case c:
                 cross = new CrossOverUniform();
                 break;
+            case d:
+                cross = new CrossOverCross(Cromossome2.cols);
+                break;
             default:
                 cross = new CrossOverSinglePoint();
         }
@@ -60,21 +73,7 @@ public class Cromossome2Factory implements ICromossomeFactory{
     
     @Override
     public Cromossome getNewCromossome() {
-        Cromossome c;
-        switch(type){
-            case a:
-                c = new Cromossome2(cross, mute);
-                break;
-            case b:
-                c = new Cromossome2b(cross, mute);
-                break;
-            case c:
-                c = new Cromossome2(cross, mute);
-                break;
-            default:
-                c = new Cromossome2(cross, mute);
-        }
-        return c;
+        return new Cromossome2(cross, mute, beta);
     }
     
     @Override
@@ -98,6 +97,7 @@ public class Cromossome2Factory implements ICromossomeFactory{
     public static enum Cromossome2Type {
         a,
         b,
-        c
+        c,
+        d
     }
 }

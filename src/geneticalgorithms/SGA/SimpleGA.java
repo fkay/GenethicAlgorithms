@@ -29,6 +29,8 @@ public class SimpleGA{
     protected List<String> summary;
     protected List<String> summaryResume;
     
+    protected List<String> bestMaps;
+    
     // the best cromossome of all gnerations
     // can be lost due no elitist selection and mutation
     private Cromossome bestCromossomeAll;
@@ -59,12 +61,18 @@ public class SimpleGA{
         for (int i = 0; i < generations; i++) {
             statistic = new GenerationStatistics(population.getSize(), i + 1);
             getPopulation().nextGeneration(statistic);
+            
+            if(saveSummary) saveSummarys(i);
+            
             if(!quiet)
                 printGenerationInfo(i);
             else
                 if( i % step == 0)
                 {
                     System.out.printf("Geração %d\n", i);
+                    
+                    if (this.bestMaps != null) this.bestMaps.add(this.getPopulation().populationBestMap());
+                    
                     // saves distribution on steps if request list is null
                     if(distFilename != null && genToSave == null)
                         getPopulation().saveCromossomes(distFilename + String.format("g%d.csv", i + 1));
@@ -80,8 +88,6 @@ public class SimpleGA{
             statistic.setPopulationDetails(population.getAvgFitness(), population.getBestCromossome(), population.getWorstCromossome());
             stats.add(statistic);
             
-            if(saveSummary) saveSummarys(i);
-            
             // Saves distribution of all generations
             //if(distFilename != null)
             //    getPopulation().saveCromossomes(distFilename + String.format("t%d.csv", i + 1));
@@ -92,6 +98,9 @@ public class SimpleGA{
         }
         System.out.println("Melhor cromossomo das gerações:");
         System.out.println(bestCromossomeAll);
+        
+        // sempre salva o ultimo
+        if (this.bestMaps != null) this.bestMaps.add(this.getPopulation().populationBestMap());
         
         // saves last distribution if not saved yet
         if (distFilename != null) {
@@ -164,9 +173,9 @@ public class SimpleGA{
     // Save summary collection to a file for reports
     public final void statisticsToFile(String filename) {
         try(BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
-            writer.write(stats.get(0).summaryHeader());
+            writer.write(stats.get(0).statsHeader());
             for (GenerationStatistics gs : stats) {
-                writer.write(gs.summaryLine());
+                writer.write(gs.statsLine());
             }
         }
         catch (IOException e) {
@@ -176,20 +185,20 @@ public class SimpleGA{
     }
     
     public final void summaryToFile(String filename) {
-        try(BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
-            for (String summ : summary) {
-                writer.write(summ);
-            }
-        }
-        catch (IOException e) {
-            System.out.println("Erro ao gravar arquivo de resumo: " + filename);
-            System.out.println(e.getMessage());
-        }
+        saveListToFile(filename, summary);
     }
     
     public final void summaryResumeToFile(String filename) {
-        try(BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
-            for (String summ : summaryResume) {
+        saveListToFile(filename, summaryResume);
+    }
+    
+    public final void summaryBestMapsToFile(String filename) {
+        saveListToFile(filename, bestMaps);
+    }
+    
+    private void saveListToFile(String filename, List<String> strings) {
+         try(BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
+            for (String summ : strings) {
                 writer.write(summ);
             }
         }
@@ -203,6 +212,9 @@ public class SimpleGA{
         if(geracao == 0) {
             this.summary = new ArrayList<>();
             this.summaryResume = new ArrayList<>();
+            this.bestMaps = new ArrayList<>();
+            
+//            this.bestMaps.add(this.getPopulation().populationBestMap());
         }
         
         this.summary.add(this.getPopulation().popuplationSummary());

@@ -7,7 +7,6 @@ package geneticalgorithms.Statistics;
 
 import geneticalgorithms.cromossomes.Cromossome;
 import java.util.List;
-import java.util.Locale;
 
 /**
  *

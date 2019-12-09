@@ -58,7 +58,7 @@ public class GenerationStatisticsSorted extends GenerationStatistics {
     }
     
     @Override
-    public String summaryLine() {
+    public String statsLine() {
         // Locale.ROOT to use '.' as decimal separator
         StringBuilder sb = new StringBuilder();
         sb.append(String.format("%d;", this.getGenerationNumber()));
@@ -74,7 +74,7 @@ public class GenerationStatisticsSorted extends GenerationStatistics {
         return  sb.toString();
     }
     @Override
-    public String summaryHeader() {
+    public String statsHeader() {
         StringBuilder sb = new StringBuilder();
         sb.append("Geracao;");
         for (int i = 0; i < topCromossomes.size(); i++) {

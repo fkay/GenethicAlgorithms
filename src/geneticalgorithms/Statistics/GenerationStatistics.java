@@ -164,7 +164,7 @@ public class GenerationStatistics {
         this.setWorstCromossome(worst);
     }
     
-     public String summaryLine() {
+     public String statsLine() {
         // Locale.ROOT to use '.' as decimal separator
         return String.format("%d; %f; %f; %f; %f; %f\n",
                 this.generationNumber,
@@ -172,7 +172,7 @@ public class GenerationStatistics {
                 this.getAvgFitness(), this.getCrossoverCromossomeTx(),
                 this.getMutatedCromossomeTx());
     }
-    public String summaryHeader() {
+    public String statsHeader() {
         return String.format("Geracao;Melhor;Pior;Media;Tx Crossover;Tx Mutacao\n");
     }
     
